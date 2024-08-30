@@ -10,13 +10,19 @@ module.exports = {
     'plugin:tailwindcss/recommended',
     'plugin:jsx-a11y/recommended',
   ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', '@tanstack/query'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
+    'react/react-in-jsx-scope': 'off',
   },
 };
