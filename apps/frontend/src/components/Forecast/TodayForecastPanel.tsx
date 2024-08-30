@@ -1,7 +1,7 @@
 import { useForecastData } from '@/hooks/useForecastData';
 import { CityName } from 'shared-types/apiTypes';
 
-const TodayForecastPanel = (currentCity: CityName) => {
+const TodayForecastPanel = ({ currentCity }: { currentCity: CityName }) => {
   const { data, error, isError, isLoading } = useForecastData(currentCity, 1);
 
   if (isLoading) {
@@ -16,7 +16,7 @@ const TodayForecastPanel = (currentCity: CityName) => {
     return <div>No data available</div>;
   }
 
-  return <div>{data.location.name}</div>;
+  return <div></div>;
 };
 
 export default TodayForecastPanel;

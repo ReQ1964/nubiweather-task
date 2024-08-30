@@ -5,7 +5,6 @@ import { useTodayOverviewData } from './hooks/useTodayOverviewData';
 function App(): JSX.Element {
   const { data, error, isError, isLoading, toggleCity, currentCity } =
     useTodayOverviewData('Gliwice');
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

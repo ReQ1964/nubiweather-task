@@ -15,4 +15,19 @@ export const FetchTodayOverviewResult = z.object({
   }),
 });
 
-export const FetchForecastData = z.object({});
+export const FetchForecastResult = z.object({
+  forecast: z.object({
+    forecastday: z.array(
+      z.object({
+        date: z.string(),
+        day: z.object({
+          avgtemp_c: z.string(),
+          condition: z.object({
+            text: z.string(),
+            icon: z.string(),
+          }),
+        }),
+      })
+    ),
+  }),
+});
