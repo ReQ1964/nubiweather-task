@@ -1,13 +1,22 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import WeatherOverview from './components/WeatherOverview';
 import axios from 'axios';
+import { API_KEY, API_URL } from './constants/api';
 
 function App(): JSX.Element {
+  type cityNameType = 'Gliwice' | 'Hamburg';
+  const [currentCity, setCurrentCity] = useState<cityNameType>('Gliwice');
+
+  const setCurrentCityHandler = (city: cityNameType): void => {
+    city === 'Gliwice' ? setCurrentCity('Hamburg') : setCurrentCity('Gliwice');
+  };
+
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['currentWeatherData'],
+    queryKey: ['currentWeatherData', currentCity],
     queryFn: async () => {
       const res = await axios.get(
-        'http://api.weatherapi.com/v1/current.json?key=8a1b2c3306344ad2bac71007243008&q=Gliwice&aqi=no'
+        `${API_URL}current.json?key=${API_KEY}&q=${currentCity}&aqi=no`
       );
       return res.data;
     },
@@ -33,6 +42,7 @@ function App(): JSX.Element {
         localtime={data.location.localtime}
         temperature={data.current.temp_c}
         condition={data.current.condition}
+        setCurrentCity={setCurrentCityHandler}
       />
     </main>
   );

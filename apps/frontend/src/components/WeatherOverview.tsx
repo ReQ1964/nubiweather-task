@@ -1,7 +1,8 @@
+import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
 
 interface WeatherOverviewPropsInterface {
-  city: string;
+  city: 'Gliwice' | 'Hamburg';
   country: string;
   localtime: string;
   temperature: string;
@@ -9,6 +10,7 @@ interface WeatherOverviewPropsInterface {
     text: string;
     icon: string;
   };
+  setCurrentCity: (city: 'Gliwice' | 'Hamburg') => void;
 }
 
 const WeatherOverview = ({
@@ -17,6 +19,7 @@ const WeatherOverview = ({
   localtime,
   temperature,
   condition,
+  setCurrentCity,
 }: WeatherOverviewPropsInterface): JSX.Element => {
   const date = dayjs(localtime.split(' ')[0]);
   const dayName = date.format('dddd');
@@ -26,28 +29,35 @@ const WeatherOverview = ({
   return (
     <section className='p-3'>
       <header>
-        <h2 className='text-3xl'>
-          {city}, {country}
-        </h2>
+        <nav className='flex flex-row gap-4'>
+          <h2 className='text-3xl'>
+            {city}, {country}
+          </h2>
+          <button
+            className='duration-75 hover:scale-105'
+            onClick={() => setCurrentCity(city)}
+          >
+            <ExchangeArrowIcon />
+          </button>
+        </nav>
         <p>
           {dayName}, {dayOfTheMonth} {monthName}
         </p>
       </header>
       <main className='flex flex-row align-middle'>
         <div>
-          {condition.icon ? (
+          <img src={condition.icon} alt={condition.text} className='size-48' />
+        </div>
+        <div className='flex flex-col justify-center gap-2 align-middle'>
+          <h1 className='text-6xl'>{temperature}&#8451;</h1>
+          <div className='flex flex-row'>
             <img
               src={condition.icon}
               alt={condition.text}
-              className='size-48'
+              className='size-10 '
             />
-          ) : (
-            <div>LOGO</div>
-          )}
-        </div>
-        <div className='flex flex-col justify-center align-middle'>
-          <h1 className='text-6xl'>{temperature}&#8451;</h1>
-          <p>{condition.text}</p>
+            <p className='self-center'>{condition.text}</p>
+          </div>
         </div>
       </main>
     </section>
