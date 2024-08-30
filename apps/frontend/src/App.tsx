@@ -1,6 +1,6 @@
-import TodayForecastPanel from './components/Forecast/TodayForecastPanel';
 import WeatherOverview from './components/WeatherOverview';
 import { useTodayOverviewData } from './hooks/useTodayOverviewData';
+import GeneralForecastPanel from './components/Forecast/GeneralForecastPanel';
 
 function App(): JSX.Element {
   const { data, error, isError, isLoading, toggleCity, currentCity } =
@@ -27,7 +27,9 @@ function App(): JSX.Element {
         condition={data.current.condition}
         toggleCity={toggleCity}
       />
-      <TodayForecastPanel currentCity={currentCity} />
+      <section className='bg-gray-200'>
+        <GeneralForecastPanel currentCity={currentCity} />
+      </section>
     </main>
   );
 }

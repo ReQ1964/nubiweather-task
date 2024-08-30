@@ -21,7 +21,7 @@ export const FetchForecastResult = z.object({
       z.object({
         date: z.string(),
         day: z.object({
-          avgtemp_c: z.string(),
+          avgtemp_c: z.number(),
           condition: z.object({
             text: z.string(),
             icon: z.string(),
