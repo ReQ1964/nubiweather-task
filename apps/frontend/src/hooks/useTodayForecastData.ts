@@ -2,23 +2,25 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { API_KEY, API_URL } from '../constants/api';
+import { z } from 'zod';
 
-export type CityName = 'Gliwice' | 'Hamburg';
+const FetchWeatherResult = z.object({
+  location: z.object({
+    name: z.enum(['Gliwice', 'Hamburg']),
+    country: z.string(),
+    localtime: z.string(),
+  }),
+  current: z.object({
+    temp_c: z.number(),
+    condition: z.object({
+      text: z.string(),
+      icon: z.string(),
+    }),
+  }),
+});
 
-export interface WeatherData {
-  location: {
-    name: CityName;
-    country: string;
-    localtime: string;
-  };
-  current: {
-    temp_c: string;
-    condition: {
-      text: string;
-      icon: string;
-    };
-  };
-}
+export type CityName = z.infer<typeof FetchWeatherResult>['location']['name'];
+export type WeatherData = z.infer<typeof FetchWeatherResult>;
 
 const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
   const res = await axios.get(`${API_URL}current.json`, {
@@ -28,7 +30,8 @@ const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
       aqi: 'no',
     },
   });
-  return res.data;
+  const parsedData = FetchWeatherResult.parse(res.data);
+  return parsedData;
 };
 
 export const useTodayForecastData = (initialCity: CityName) => {

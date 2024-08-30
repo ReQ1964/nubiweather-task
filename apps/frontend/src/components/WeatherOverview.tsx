@@ -6,7 +6,7 @@ interface WeatherOverviewPropsInterface {
   city: CityName;
   country: string;
   localtime: string;
-  temperature: string;
+  temperature: number;
   condition: {
     text: string;
     icon: string;
