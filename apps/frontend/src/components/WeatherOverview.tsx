@@ -1,6 +1,6 @@
 import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
-import type { CityName } from '@/App';
+import { CityName } from '@/hooks/useTodayForecastData';
 
 interface WeatherOverviewPropsInterface {
   city: CityName;
@@ -11,7 +11,7 @@ interface WeatherOverviewPropsInterface {
     text: string;
     icon: string;
   };
-  setCurrentCity: (city: CityName) => void;
+  toggleCity: (city: CityName) => void;
 }
 
 const WeatherOverview = ({
@@ -20,7 +20,7 @@ const WeatherOverview = ({
   localtime,
   temperature,
   condition,
-  setCurrentCity,
+  toggleCity,
 }: WeatherOverviewPropsInterface): JSX.Element => {
   const date = dayjs(localtime.split(' ')[0]);
   const dayName = date.format('dddd');
@@ -36,9 +36,7 @@ const WeatherOverview = ({
           </h2>
           <button
             className='absolute right-1 top-1'
-            onClick={() =>
-              setCurrentCity(city === 'Gliwice' ? 'Hamburg' : 'Gliwice')
-            }
+            onClick={() => toggleCity(city)}
             aria-label='Switch City'
           >
             <ExchangeArrowIcon />
