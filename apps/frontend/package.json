@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.53.1",
+    "axios": "^1.7.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "shared-types": "workspace:*"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.53.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.1",
     "@types/react": "^18.3.4",
