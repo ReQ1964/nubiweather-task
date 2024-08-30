@@ -4,22 +4,40 @@ import WeatherOverview from './components/WeatherOverview';
 import axios from 'axios';
 import { API_KEY, API_URL } from './constants/api';
 
-function App(): JSX.Element {
-  type cityNameType = 'Gliwice' | 'Hamburg';
-  const [currentCity, setCurrentCity] = useState<cityNameType>('Gliwice');
+export type CityName = 'Gliwice' | 'Hamburg';
 
-  const setCurrentCityHandler = (city: cityNameType): void => {
-    city === 'Gliwice' ? setCurrentCity('Hamburg') : setCurrentCity('Gliwice');
+interface WeatherData {
+  location: {
+    name: CityName;
+    country: string;
+    localtime: string;
   };
+  current: {
+    temp_c: string;
+    condition: {
+      text: string;
+      icon: string;
+    };
+  };
+}
+
+const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
+  const res = await axios.get(`${API_URL}current.json`, {
+    params: {
+      key: API_KEY,
+      q: city,
+      aqi: 'no',
+    },
+  });
+  return res.data;
+};
+
+function App(): JSX.Element {
+  const [currentCity, setCurrentCity] = useState<CityName>('Gliwice');
 
   const { isLoading, isError, data, error } = useQuery({
-    queryKey: ['currentWeatherData', currentCity],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${API_URL}current.json?key=${API_KEY}&q=${currentCity}&aqi=no`
-      );
-      return res.data;
-    },
+    queryKey: [currentCity],
+    queryFn: () => fetchWeatherData(currentCity),
   });
 
   if (isLoading) {
@@ -27,7 +45,7 @@ function App(): JSX.Element {
   }
 
   if (isError) {
-    return <div>Error: {error.message}</div>;
+    return <div>{error.message || 'An unexpected error occurred'}</div>;
   }
 
   if (!data) {
@@ -42,7 +60,7 @@ function App(): JSX.Element {
         localtime={data.location.localtime}
         temperature={data.current.temp_c}
         condition={data.current.condition}
-        setCurrentCity={setCurrentCityHandler}
+        setCurrentCity={setCurrentCity}
       />
     </main>
   );

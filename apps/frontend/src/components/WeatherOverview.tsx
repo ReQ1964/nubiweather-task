@@ -1,8 +1,9 @@
 import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
+import type { CityName } from '@/App';
 
 interface WeatherOverviewPropsInterface {
-  city: 'Gliwice' | 'Hamburg';
+  city: CityName;
   country: string;
   localtime: string;
   temperature: string;
@@ -10,7 +11,7 @@ interface WeatherOverviewPropsInterface {
     text: string;
     icon: string;
   };
-  setCurrentCity: (city: 'Gliwice' | 'Hamburg') => void;
+  setCurrentCity: (city: CityName) => void;
 }
 
 const WeatherOverview = ({
@@ -29,13 +30,16 @@ const WeatherOverview = ({
   return (
     <section className='p-3'>
       <header>
-        <nav className='flex flex-row gap-4'>
+        <nav className='relative'>
           <h2 className='text-3xl'>
             {city}, {country}
           </h2>
           <button
-            className='duration-75 hover:scale-105'
-            onClick={() => setCurrentCity(city)}
+            className='absolute right-1 top-1'
+            onClick={() =>
+              setCurrentCity(city === 'Gliwice' ? 'Hamburg' : 'Gliwice')
+            }
+            aria-label='Switch City'
           >
             <ExchangeArrowIcon />
           </button>
@@ -44,12 +48,12 @@ const WeatherOverview = ({
           {dayName}, {dayOfTheMonth} {monthName}
         </p>
       </header>
-      <main className='flex flex-row align-middle'>
+      <main className='flex flex-row justify-start align-middle'>
         <div>
-          <img src={condition.icon} alt={condition.text} className='size-48' />
+          <img src={condition.icon} alt={condition.text} className='size-36' />
         </div>
         <div className='flex flex-col justify-center gap-2 align-middle'>
-          <h1 className='text-6xl'>{temperature}&#8451;</h1>
+          <h1 className='text-5xl'>{temperature}&#8451;</h1>
           <div className='flex flex-row'>
             <img
               src={condition.icon}
