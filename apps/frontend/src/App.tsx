@@ -27,7 +27,7 @@ function App(): JSX.Element {
         condition={data.current.condition}
         toggleCity={toggleCity}
       />
-      <section className='bg-gray-200'>
+      <section className='bg-gradient-to-br from-sky-300 to-sky-700'>
         <GeneralForecastPanel currentCity={currentCity} />
       </section>
     </main>

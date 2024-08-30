@@ -16,7 +16,6 @@ const fetchForecastData = async (city: CityName, days: number) => {
   });
 
   const parsedData = FetchForecastResult.parse(res.data);
-  console.log(parsedData);
   return parsedData;
 };
 

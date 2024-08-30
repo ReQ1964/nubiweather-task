@@ -19,20 +19,20 @@ const ForecastModeToggler = ({
   return (
     <div className='mb-8 flex flex-row gap-3'>
       <button
-        className={`relative font-bold ${
+        className={`relative text-lg font-bold ${
           forecastMode === 'today'
-            ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-            : 'text-gray-400'
+            ? "text-sky-950 after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-sky-950 after:content-['']"
+            : 'text-white'
         }`}
         onClick={setForecastToToday}
       >
         Today
       </button>
       <button
-        className={`relative font-bold ${
+        className={`relative text-lg font-bold ${
           forecastMode === 'week'
-            ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-            : 'text-gray-400'
+            ? "text-sky-950 after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-sky-950 after:content-['']"
+            : 'text-white'
         }`}
         onClick={setForecastToWeek}
       >

@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+const conditionSchema = z.object({
+  text: z.string(),
+  icon: z.string(),
+});
+
 export const FetchTodayOverviewResult = z.object({
   location: z.object({
     name: z.enum(['Gliwice', 'Hamburg']),
@@ -8,10 +13,7 @@ export const FetchTodayOverviewResult = z.object({
   }),
   current: z.object({
     temp_c: z.number(),
-    condition: z.object({
-      text: z.string(),
-      icon: z.string(),
-    }),
+    condition: conditionSchema,
   }),
 });
 
@@ -22,11 +24,15 @@ export const FetchForecastResult = z.object({
         date: z.string(),
         day: z.object({
           avgtemp_c: z.number(),
-          condition: z.object({
-            text: z.string(),
-            icon: z.string(),
-          }),
+          condition: conditionSchema,
         }),
+        hour: z.array(
+          z.object({
+            time: z.string(),
+            temp_c: z.number(),
+            condition: conditionSchema,
+          })
+        ),
       })
     ),
   }),
