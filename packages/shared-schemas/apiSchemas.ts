@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const FetchTodayForecastResult = z.object({
+export const FetchTodayOverviewResult = z.object({
   location: z.object({
     name: z.enum(['Gliwice', 'Hamburg']),
     country: z.string(),
@@ -14,3 +14,5 @@ export const FetchTodayForecastResult = z.object({
     }),
   }),
 });
+
+export const FetchForecastData = z.object({});

@@ -1,9 +1,10 @@
+import TodayForecastPanel from './components/Forecast/TodayForecastPanel';
 import WeatherOverview from './components/WeatherOverview';
-import { useTodayForecastData } from './hooks/useTodayForecastData';
+import { useTodayOverviewData } from './hooks/useTodayOverviewData';
 
 function App(): JSX.Element {
-  const { data, error, isError, isLoading, toggleCity } =
-    useTodayForecastData('Gliwice');
+  const { data, error, isError, isLoading, toggleCity, currentCity } =
+    useTodayOverviewData('Gliwice');
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -27,6 +28,7 @@ function App(): JSX.Element {
         condition={data.current.condition}
         toggleCity={toggleCity}
       />
+      <TodayForecastPanel currentCity={currentCity} />
     </main>
   );
 }
