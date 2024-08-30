@@ -1,6 +1,6 @@
 import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
-import { CityName } from '@/hooks/useTodayForecastData';
+import { CityName } from 'shared-types/apiTypes';
 
 interface WeatherOverviewPropsInterface {
   city: CityName;

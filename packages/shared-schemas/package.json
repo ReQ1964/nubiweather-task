@@ -1,13 +1,12 @@
 {
   "private": true,
-  "name": "shared-types",
+  "name": "shared-schemas",
   "version": "1.0.0",
   "main": "index.ts",
   "exports": {
-    "./apiTypes": "./apiTypes.ts"
+    "./apiSchemas": "./apiSchemas.ts"
   },
   "dependencies": {
-    "shared-schemas": "workspace:*",
     "zod": "^3.23.8"
   }
 }
