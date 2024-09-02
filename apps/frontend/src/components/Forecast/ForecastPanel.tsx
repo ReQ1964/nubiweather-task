@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import ForecastModeToggler from './ForecastModeToggler';
 import DayForecast from './DayForecast';
-import WeekForecast from './WeekForecast';
+// import WeekForecast from './WeekForecast';
+import WeekForecastNo from './WeekForecast';
 
 export type ForecastMode = 'today' | 'week';
 
@@ -13,11 +14,7 @@ const ForecastPanel = () => {
         forecastMode={forecastMode}
         setForecastMode={setForecastMode}
       />
-      {forecastMode === 'today' ? (
-        <DayForecast days={1} />
-      ) : (
-        <WeekForecast days={7} />
-      )}
+      {forecastMode === 'today' ? <DayForecast /> : <WeekForecastNo />}
     </section>
   );
 };

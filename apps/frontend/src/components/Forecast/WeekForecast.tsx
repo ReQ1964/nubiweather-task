@@ -4,25 +4,18 @@ import { CurrentCityContext } from '@/App';
 import { useForecastData } from '@/hooks/useForecastData';
 import ForecastTile from './ForecastTile';
 
-const WeekForecast = ({ days }: { days: number }) => {
+const WeekForecast = () => {
   const currentCity = useContext(CurrentCityContext);
-  const { data, error, isError, isLoading } = useForecastData(
-    currentCity,
-    days
-  );
+  const { data, error, isError, isLoading } = useForecastData(currentCity, 7);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
 
-  if (isError) {
+  if (isError)
     return <div>{error?.message || 'An unexpected error occurred'}</div>;
-  }
 
-  if (!data) {
-    return <div>No data available</div>;
-  }
+  if (!data) return <div>No data available</div>;
 
+  const days = data.forecast.forecastday.length;
   const dataWithoutCurrentDay =
     days > 1 ? data.forecast.forecastday.slice(1) : [];
 
