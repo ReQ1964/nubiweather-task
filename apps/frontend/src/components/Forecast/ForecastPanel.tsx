@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import ForecastModeToggler from './ForecastModeToggler';
-import TodayForecastPanel from './TodayForecastPanel';
-import { CityName } from 'shared-types/apiTypes';
+import DayForecast from './DayForecast';
+import WeekForecast from './WeekForecast';
 
 export type ForecastMode = 'today' | 'week';
 
-const GeneralForecastPanel = ({ currentCity }: { currentCity: CityName }) => {
+const ForecastPanel = () => {
   const [forecastMode, setForecastMode] = useState<ForecastMode>('today');
-
   return (
     <section className='p-4'>
       <ForecastModeToggler
@@ -15,12 +14,12 @@ const GeneralForecastPanel = ({ currentCity }: { currentCity: CityName }) => {
         setForecastMode={setForecastMode}
       />
       {forecastMode === 'today' ? (
-        <TodayForecastPanel currentCity={currentCity} />
+        <DayForecast days={1} />
       ) : (
-        <div>TBA</div>
+        <WeekForecast days={7} />
       )}
     </section>
   );
 };
 
-export default GeneralForecastPanel;
+export default ForecastPanel;

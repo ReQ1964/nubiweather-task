@@ -1,4 +1,4 @@
-import { ForecastMode } from './GeneralForecastPanel';
+import { ForecastMode } from './ForecastPanel';
 
 interface ForecastModeTogglerProps {
   forecastMode: ForecastMode;
