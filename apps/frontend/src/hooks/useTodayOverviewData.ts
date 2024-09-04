@@ -10,9 +10,9 @@ const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
     params: {
       key: API_KEY,
       q: city,
-      aqi: 'no',
     },
   });
+  console.log(res.data);
   const parsedData = FetchTodayOverviewResult.parse(res.data);
   return parsedData;
 };

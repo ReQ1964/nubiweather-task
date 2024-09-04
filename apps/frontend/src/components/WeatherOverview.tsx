@@ -2,7 +2,7 @@ import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
 import { CityName } from 'shared-types/apiTypes';
 
-interface WeatherOverviewPropsInterface {
+interface WeatherOverviewProps {
   city: CityName;
   country: string;
   localtime: string;
@@ -21,7 +21,7 @@ const WeatherOverview = ({
   temperature,
   condition,
   toggleCity,
-}: WeatherOverviewPropsInterface): JSX.Element => {
+}: WeatherOverviewProps): JSX.Element => {
   const date = dayjs(localtime.split(' ')[0]);
   const dayName = date.format('dddd');
   const monthName = date.format('MMMM');

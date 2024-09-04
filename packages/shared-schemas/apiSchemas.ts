@@ -14,6 +14,12 @@ export const FetchTodayOverviewResult = z.object({
   current: z.object({
     temp_c: z.number(),
     condition: conditionSchema,
+    humidity: z.number(),
+    uv: z.number(),
+    vis_km: z.number(),
+    wind_kph: z.number(),
+    precip_mm: z.number(),
+    heatindex_c: z.number(),
   }),
 });
 

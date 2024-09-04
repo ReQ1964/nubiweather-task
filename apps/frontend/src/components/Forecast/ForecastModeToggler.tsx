@@ -17,7 +17,7 @@ const ForecastModeToggler = ({
   };
 
   return (
-    <div className='mb-8 flex flex-row gap-3'>
+    <div className='mb-6 flex flex-row gap-3'>
       <button
         className={`relative text-lg font-bold ${
           forecastMode === 'today'
