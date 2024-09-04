@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { CurrentCityContext } from '@/App';
 import { useForecastData } from '@/hooks/useForecastData';
 import ForecastTile from './ForecastTile';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const WeekForecast = () => {
   const currentCity = useContext(CurrentCityContext);
@@ -20,21 +21,43 @@ const WeekForecast = () => {
     days > 1 ? data.forecast.forecastday.slice(1) : [];
 
   return (
-    <main className='flex flex-row justify-center gap-7'>
+    <Swiper
+      className='flex flex-row gap-7'
+      spaceBetween={50}
+      slidesPerView={2}
+      breakpoints={{
+        375: {
+          slidesPerView: 2,
+        },
+        450: {
+          slidesPerView: 3,
+        },
+        550: {
+          slidesPerView: 4,
+        },
+        700: {
+          slidesPerView: 5,
+        },
+        900: {
+          slidesPerView: 6,
+        },
+      }}
+    >
       {dataWithoutCurrentDay.map((item) => {
         const weekday = dayjs(item.date).format('ddd');
 
         return (
-          <ForecastTile
-            key={item.date}
-            topInfo={weekday}
-            temperature={item.day.avgtemp_c}
-            weatherIcon={item.day.condition.icon}
-            weatherText={item.day.condition.text}
-          />
+          <SwiperSlide key={item.date}>
+            <ForecastTile
+              topInfo={weekday}
+              temperature={item.day.avgtemp_c}
+              weatherIcon={item.day.condition.icon}
+              weatherText={item.day.condition.text}
+            />
+          </SwiperSlide>
         );
       })}
-    </main>
+    </Swiper>
   );
 };
 

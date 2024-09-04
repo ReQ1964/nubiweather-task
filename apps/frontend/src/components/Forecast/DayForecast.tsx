@@ -47,47 +47,46 @@ const DayForecast = () => {
   const currentHour = dayjs().format('HH:00');
 
   return (
-    <div className='flex flex-row gap-7'>
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={2}
-        breakpoints={{
-          375: {
-            slidesPerView: 2,
-          },
-          450: {
-            slidesPerView: 3,
-          },
-          550: {
-            slidesPerView: 4,
-          },
-          700: {
-            slidesPerView: 5,
-          },
-          900: {
-            slidesPerView: 6,
-          },
-        }}
-      >
-        {forecastDays.map((day, index) => {
-          const hours = filterHours(day.hour, index, currentHour);
+    <Swiper
+      className='flex flex-row gap-7'
+      spaceBetween={50}
+      slidesPerView={2}
+      breakpoints={{
+        375: {
+          slidesPerView: 2,
+        },
+        450: {
+          slidesPerView: 3,
+        },
+        550: {
+          slidesPerView: 4,
+        },
+        700: {
+          slidesPerView: 5,
+        },
+        900: {
+          slidesPerView: 6,
+        },
+      }}
+    >
+      {forecastDays.map((day, index) => {
+        const hours = filterHours(day.hour, index, currentHour);
 
-          return hours.map(({ time, temp_c, condition }) => {
-            const hour = dayjs(time).format('HH:00');
-            return (
-              <SwiperSlide key={time}>
-                <ForecastTile
-                  topInfo={hour}
-                  temperature={temp_c}
-                  weatherIcon={condition.icon}
-                  weatherText={condition.text}
-                />
-              </SwiperSlide>
-            );
-          });
-        })}
-      </Swiper>
-    </div>
+        return hours.map(({ time, temp_c, condition }) => {
+          const hour = dayjs(time).format('HH:00');
+          return (
+            <SwiperSlide key={time}>
+              <ForecastTile
+                topInfo={hour}
+                temperature={temp_c}
+                weatherIcon={condition.icon}
+                weatherText={condition.text}
+              />
+            </SwiperSlide>
+          );
+        });
+      })}
+    </Swiper>
   );
 };
 
