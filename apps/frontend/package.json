@@ -17,6 +17,7 @@
     "react-dom": "^18.2.0",
     "shared-schemas": "workspace:*",
     "shared-types": "workspace:*",
+    "swiper": "^11.1.12",
     "zod": "^3.23.8"
   },
   "devDependencies": {
