@@ -3,7 +3,8 @@ import dayjs from 'dayjs';
 import { CurrentCityContext } from '@/App';
 import { useForecastData } from '@/hooks/useForecastData';
 import ForecastTile from './ForecastTile';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SwiperSlide } from 'swiper/react';
+import SwiperWrapper from '../UI/SwiperWrapper';
 
 const WeekForecast = () => {
   const currentCity = useContext(CurrentCityContext);
@@ -21,28 +22,7 @@ const WeekForecast = () => {
     days > 1 ? data.forecast.forecastday.slice(1) : [];
 
   return (
-    <Swiper
-      className='flex flex-row gap-7'
-      spaceBetween={50}
-      slidesPerView={2}
-      breakpoints={{
-        375: {
-          slidesPerView: 2,
-        },
-        450: {
-          slidesPerView: 3,
-        },
-        550: {
-          slidesPerView: 4,
-        },
-        700: {
-          slidesPerView: 5,
-        },
-        900: {
-          slidesPerView: 6,
-        },
-      }}
-    >
+    <SwiperWrapper>
       {dataWithoutCurrentDay.map((item) => {
         const weekday = dayjs(item.date).format('ddd');
 
@@ -57,7 +37,7 @@ const WeekForecast = () => {
           </SwiperSlide>
         );
       })}
-    </Swiper>
+    </SwiperWrapper>
   );
 };
 

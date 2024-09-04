@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import dayjs from 'dayjs';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { SwiperSlide } from 'swiper/react';
+import SwiperWrapper from '../UI/SwiperWrapper';
 
 import { useForecastData } from '@/hooks/useForecastData';
 import ForecastTile from './ForecastTile';
@@ -47,28 +48,7 @@ const DayForecast = () => {
   const currentHour = dayjs().format('HH:00');
 
   return (
-    <Swiper
-      className='flex flex-row gap-7'
-      spaceBetween={50}
-      slidesPerView={2}
-      breakpoints={{
-        375: {
-          slidesPerView: 2,
-        },
-        450: {
-          slidesPerView: 3,
-        },
-        550: {
-          slidesPerView: 4,
-        },
-        700: {
-          slidesPerView: 5,
-        },
-        900: {
-          slidesPerView: 6,
-        },
-      }}
-    >
+    <SwiperWrapper>
       {forecastDays.map((day, index) => {
         const hours = filterHours(day.hour, index, currentHour);
 
@@ -86,7 +66,7 @@ const DayForecast = () => {
           );
         });
       })}
-    </Swiper>
+    </SwiperWrapper>
   );
 };
 
