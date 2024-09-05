@@ -47,7 +47,7 @@ const WeatherOverview = ({
           {dayName}, {dayOfTheMonth} {monthName}
         </p>
       </header>
-      <main className='flex flex-row justify-center pt-6 align-middle sm:py-12 lg:flex-col lg:py-0 lg:pt-6 lg:text-center'>
+      <main className='flex flex-row justify-center pb-6 pt-10 align-middle sm:py-12 lg:flex-col lg:py-0 lg:pt-6 lg:text-center'>
         <img
           src={condition.icon}
           alt={condition.text}
@@ -61,7 +61,7 @@ const WeatherOverview = ({
       <img
         src={cityImg}
         alt='A generic city'
-        className='mt-auto hidden rounded-2xl lg:block'
+        className='mt-auto hidden rounded-2xl brightness-90 lg:block'
       />
     </section>
   );

@@ -46,7 +46,7 @@ function App(): JSX.Element {
           condition={condition}
           toggleCity={toggleCity}
         />
-        <section className='flex flex-col gap-12 bg-slate-400 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
+        <section className='flex flex-col gap-12 bg-gray-200 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
           <ForecastPanel />
           <TodayHighlight
             heatIndex={heatindex_c}

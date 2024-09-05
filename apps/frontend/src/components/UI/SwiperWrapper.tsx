@@ -8,8 +8,8 @@ type SwiperWrapperProps = {
 const SwiperWrapper = ({ children }: SwiperWrapperProps) => {
   return (
     <Swiper
-      className='flex flex-row gap-7'
-      spaceBetween={50}
+      className='flex flex-row gap-5'
+      spaceBetween={0}
       slidesPerView={2}
       breakpoints={{
         375: {

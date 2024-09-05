@@ -22,7 +22,7 @@ const ForecastModeToggler = ({
         className={`relative text-lg font-bold ${
           forecastMode === 'today'
             ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-            : 'text-white'
+            : 'text-gray-500'
         }`}
         onClick={setForecastToToday}
       >
@@ -32,7 +32,7 @@ const ForecastModeToggler = ({
         className={`relative text-lg font-bold ${
           forecastMode === 'week'
             ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-            : 'text-white'
+            : 'text-gray-500'
         }`}
         onClick={setForecastToWeek}
       >
