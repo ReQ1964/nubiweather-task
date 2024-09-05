@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Swiper } from 'swiper/react';
-
+import 'swiper/css';
 type SwiperWrapperProps = {
   children: ReactNode;
 };
@@ -8,8 +8,8 @@ type SwiperWrapperProps = {
 const SwiperWrapper = ({ children }: SwiperWrapperProps) => {
   return (
     <Swiper
-      className='flex flex-row gap-7'
-      spaceBetween={50}
+      className='flex flex-row gap-5'
+      spaceBetween={0}
       slidesPerView={2}
       breakpoints={{
         375: {
@@ -23,9 +23,6 @@ const SwiperWrapper = ({ children }: SwiperWrapperProps) => {
         },
         700: {
           slidesPerView: 5,
-        },
-        900: {
-          slidesPerView: 6,
         },
       }}
     >

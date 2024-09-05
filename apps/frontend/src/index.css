@@ -8,3 +8,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+body,
+#root {
+  height: 100vh;
+}
+@media (min-width: 1024px) {
+  #root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

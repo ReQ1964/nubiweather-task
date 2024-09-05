@@ -9,7 +9,7 @@ export type ForecastMode = 'today' | 'week';
 const ForecastPanel = () => {
   const [forecastMode, setForecastMode] = useState<ForecastMode>('today');
   return (
-    <section className='p-4'>
+    <section>
       <ForecastModeToggler
         forecastMode={forecastMode}
         setForecastMode={setForecastMode}
