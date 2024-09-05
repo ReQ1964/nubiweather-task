@@ -21,7 +21,7 @@ const ForecastModeToggler = ({
       <button
         className={`relative text-lg font-bold ${
           forecastMode === 'today'
-            ? "text-sky-950 after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-sky-950 after:content-['']"
+            ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
             : 'text-white'
         }`}
         onClick={setForecastToToday}
@@ -31,7 +31,7 @@ const ForecastModeToggler = ({
       <button
         className={`relative text-lg font-bold ${
           forecastMode === 'week'
-            ? "text-sky-950 after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-sky-950 after:content-['']"
+            ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
             : 'text-white'
         }`}
         onClick={setForecastToWeek}

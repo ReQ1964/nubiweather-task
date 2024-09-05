@@ -27,7 +27,7 @@ function App(): JSX.Element {
 
   return (
     <CurrentCityContext.Provider value={currentCity}>
-      <main>
+      <main className='max-w-5xl shadow-xl lg:flex lg:justify-center lg:rounded-3xl lg:align-middle xl:max-w-6xl'>
         <WeatherOverview
           city={name}
           country={country}
@@ -36,7 +36,7 @@ function App(): JSX.Element {
           condition={condition}
           toggleCity={toggleCity}
         />
-        <section className='flex flex-col gap-5 bg-gradient-to-br from-sky-100 to-sky-900'>
+        <section className='flex flex-col gap-12 bg-slate-400 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
           <ForecastPanel />
         </section>
       </main>

@@ -28,10 +28,10 @@ const WeatherOverview = ({
   const dayOfTheMonth = date.get('date');
 
   return (
-    <section className='px-4 py-6'>
+    <section className='px-4 py-6 lg:w-3/12 lg:rounded-l-3xl lg:p-8'>
       <header>
         <nav className='relative'>
-          <h2 className='text-3xl'>
+          <h2 className='mr-7 text-3xl'>
             {city}, {country}
           </h2>
           <button
@@ -46,10 +46,12 @@ const WeatherOverview = ({
           {dayName}, {dayOfTheMonth} {monthName}
         </p>
       </header>
-      <main className='mr-9 flex flex-row justify-center pt-6 align-middle'>
-        <div>
-          <img src={condition.icon} alt={condition.text} className='size-28' />
-        </div>
+      <main className='flex flex-row justify-center pt-6 align-middle sm:py-12 lg:flex-col lg:py-0 lg:pt-6 lg:text-center'>
+        <img
+          src={condition.icon}
+          alt={condition.text}
+          className='size-28 lg:self-center'
+        />
         <div className='flex flex-col justify-center gap-2 align-middle'>
           <h1 className='text-5xl'>{temperature}&#8451;</h1>
           <p>{condition.text}</p>

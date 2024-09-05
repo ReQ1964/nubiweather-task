@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Swiper } from 'swiper/react';
-
+import 'swiper/css';
 type SwiperWrapperProps = {
   children: ReactNode;
 };
@@ -23,9 +23,6 @@ const SwiperWrapper = ({ children }: SwiperWrapperProps) => {
         },
         700: {
           slidesPerView: 5,
-        },
-        900: {
-          slidesPerView: 6,
         },
       }}
     >

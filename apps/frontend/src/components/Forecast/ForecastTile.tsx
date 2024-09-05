@@ -13,13 +13,13 @@ const ForecastTile = ({
 }: ForecastTileProps) => {
   return (
     <div className='flex w-32 flex-col  gap-1 rounded-md border border-gray-200 bg-white p-4 text-center  shadow-xl'>
-      <p className='text-sm font-medium text-sky-950'>{topInfo}</p>
+      <p className='text-sm font-medium'>{topInfo}</p>
       <img
         src={weatherIcon}
         alt={weatherText}
         className='size-12 self-center'
       />
-      <p className='text-lg font-semibold text-sky-950'>{temperature}&#8451;</p>
+      <p className='text-lg font-semibold'>{temperature}&#8451;</p>
     </div>
   );
 };
