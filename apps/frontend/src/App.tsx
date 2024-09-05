@@ -3,6 +3,7 @@ import { useTodayOverviewData } from './hooks/useTodayOverviewData';
 import ForecastPanel from './components/Forecast/ForecastPanel';
 import { createContext } from 'react';
 import { CityName } from 'shared-types/apiTypes';
+import TodayHighlight from './components/TodayHighlight/TodayHighlight';
 
 export const CurrentCityContext = createContext<CityName>('Gliwice');
 
@@ -23,7 +24,16 @@ function App(): JSX.Element {
   }
 
   const { name, country, localtime } = data.location;
-  const { temp_c, condition } = data.current;
+  const {
+    temp_c,
+    condition,
+    heatindex_c,
+    uv,
+    humidity,
+    precip_mm,
+    vis_km,
+    wind_kph,
+  } = data.current;
 
   return (
     <CurrentCityContext.Provider value={currentCity}>
@@ -38,6 +48,14 @@ function App(): JSX.Element {
         />
         <section className='flex flex-col gap-12 bg-slate-400 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
           <ForecastPanel />
+          <TodayHighlight
+            heatIndex={heatindex_c}
+            uv={uv}
+            humidity={humidity}
+            precipitation={precip_mm}
+            visibility={vis_km}
+            windSpeed={wind_kph}
+          />
         </section>
       </main>
     </CurrentCityContext.Provider>
