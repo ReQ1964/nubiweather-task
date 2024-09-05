@@ -1,6 +1,7 @@
 import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
 import { CityName } from 'shared-types/apiTypes';
+import cityImg from '@/assets/img/city-bg.jpg';
 
 interface WeatherOverviewProps {
   city: CityName;
@@ -28,7 +29,7 @@ const WeatherOverview = ({
   const dayOfTheMonth = date.get('date');
 
   return (
-    <section className='px-4 py-6 lg:w-3/12 lg:rounded-l-3xl lg:p-8'>
+    <section className='flex flex-col px-4 py-6 lg:w-3/12 lg:rounded-l-3xl lg:p-8'>
       <header>
         <nav className='relative'>
           <h2 className='mr-7 text-3xl'>
@@ -57,6 +58,11 @@ const WeatherOverview = ({
           <p>{condition.text}</p>
         </div>
       </main>
+      <img
+        src={cityImg}
+        alt='A generic city'
+        className='mt-auto hidden rounded-2xl lg:block'
+      />
     </section>
   );
 };
