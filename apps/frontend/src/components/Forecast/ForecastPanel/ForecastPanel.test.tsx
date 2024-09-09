@@ -10,7 +10,7 @@ vi.mock('../DayForecast/DayForecast', () => ({
   default: () => <div>Day Forecast</div>,
 }));
 
-vi.mock('../WeekForecast', () => ({
+vi.mock('../WeekForecast/WeekForecast', () => ({
   __esModule: true,
   default: () => <div>Week Forecast</div>,
 }));

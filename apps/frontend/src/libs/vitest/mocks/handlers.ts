@@ -10,7 +10,7 @@ const mockForecastData = {
           avgtemp_c: 22,
           condition: {
             text: 'Clear',
-            icon: '//cdn.weatherapi.com/weather/64x64/day/113.png',
+            icon: 'dayIcon1',
           },
         },
         hour: [
@@ -38,7 +38,7 @@ const mockForecastData = {
           avgtemp_c: 22,
           condition: {
             text: 'Clear',
-            icon: '//cdn.weatherapi.com/weather/64x64/day/113.png',
+            icon: 'dayIcon2',
           },
         },
         hour: [
