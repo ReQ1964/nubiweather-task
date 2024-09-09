@@ -4,7 +4,7 @@ import { SwiperSlide } from 'swiper/react';
 import SwiperWrapper from '../../UI/SwiperWrapper';
 
 import { useForecastData } from '@/hooks/useForecastData';
-import ForecastTile from '../ForecastTile';
+import ForecastTile from '../ForecastTile/ForecastTile';
 import { CurrentCityContext } from '@/App';
 
 import 'swiper/css';
