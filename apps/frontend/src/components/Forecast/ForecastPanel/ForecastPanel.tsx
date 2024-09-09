@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import ForecastModeToggler from './ForecastModeToggler/ForecastModeToggler';
-import DayForecast from './DayForecast/DayForecast';
-import WeekForecast from './WeekForecast';
+import ForecastModeToggler from '../ForecastModeToggler/ForecastModeToggler';
+import DayForecast from '../DayForecast/DayForecast';
+import WeekForecast from '../WeekForecast';
 
 export type ForecastMode = 'today' | 'week';
 

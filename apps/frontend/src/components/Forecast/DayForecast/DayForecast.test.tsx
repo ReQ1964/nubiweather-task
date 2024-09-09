@@ -1,23 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { server } from '@/libs/vitest/mocks/server';
 import { http, HttpResponse } from 'msw';
 import { API_URL } from '@/constants/api';
 import DayForecast from './DayForecast';
+import { mockedQueryClient } from '@/libs/vitest/mocks/tanstackQuery';
 
 describe('DayForecast', () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
   it('should display correct mocked data', async () => {
     render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={mockedQueryClient}>
         <DayForecast />
       </QueryClientProvider>
     );
@@ -47,7 +40,7 @@ describe('DayForecast', () => {
     );
 
     render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={mockedQueryClient}>
         <DayForecast />
       </QueryClientProvider>
     );
@@ -63,7 +56,7 @@ describe('DayForecast', () => {
     );
 
     render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={mockedQueryClient}>
         <DayForecast />
       </QueryClientProvider>
     );
