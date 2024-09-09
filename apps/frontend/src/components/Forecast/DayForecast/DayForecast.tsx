@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 import { SwiperSlide } from 'swiper/react';
-import SwiperWrapper from '../UI/SwiperWrapper';
+import SwiperWrapper from '../../UI/SwiperWrapper';
 
 import { useForecastData } from '@/hooks/useForecastData';
-import ForecastTile from './ForecastTile';
+import ForecastTile from '../ForecastTile';
 import { CurrentCityContext } from '@/App';
 
 import 'swiper/css';
@@ -55,7 +55,7 @@ const DayForecast = () => {
         return hours.map(({ time, temp_c, condition }) => {
           const hour = dayjs(time).format('HH:00');
           return (
-            <SwiperSlide key={time}>
+            <SwiperSlide key={time} data-testid='data-out'>
               <ForecastTile
                 topInfo={hour}
                 temperature={temp_c}

@@ -24,5 +24,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'react/react-in-jsx-scope': 'off',
+    'testing-library/no-render-in-lifecycle': 'off',
   },
 };
