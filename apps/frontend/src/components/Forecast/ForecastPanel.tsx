@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ForecastModeToggler from './ForecastModeToggler';
+import ForecastModeToggler from './ForecastModeToggler/ForecastModeToggler';
 import DayForecast from './DayForecast/DayForecast';
 import WeekForecast from './WeekForecast';
 
