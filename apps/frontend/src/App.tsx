@@ -3,7 +3,7 @@ import { useTodayOverviewData } from './hooks/useTodayOverviewData';
 import ForecastPanel from './components/Forecast/ForecastPanel/ForecastPanel';
 import { createContext } from 'react';
 import { CityName } from 'shared-types/apiTypes';
-import TodayHighlight from './components/TodayHighlight/TodayHighlight';
+import TodayHighlight from './components/Highlight/TodayHighlight/TodayHighlight';
 
 export const CurrentCityContext = createContext<CityName>('Gliwice');
 
