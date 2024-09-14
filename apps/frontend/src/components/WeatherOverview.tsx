@@ -1,10 +1,9 @@
-import ExchangeArrowIcon from '@/assets/icons/ExchangeArrowIcon';
 import dayjs from 'dayjs';
-import { CityName } from 'shared-types/apiTypes';
 import cityImg from '@/assets/img/city-bg.jpg';
+import CitySelectInput from './CitySelectInput';
 
 interface WeatherOverviewProps {
-  city: CityName;
+  city: string;
   country: string;
   localtime: string;
   temperature: number;
@@ -12,7 +11,6 @@ interface WeatherOverviewProps {
     text: string;
     icon: string;
   };
-  toggleCity: (city: CityName) => void;
 }
 
 const WeatherOverview = ({
@@ -21,7 +19,6 @@ const WeatherOverview = ({
   localtime,
   temperature,
   condition,
-  toggleCity,
 }: WeatherOverviewProps): JSX.Element => {
   const date = dayjs(localtime.split(' ')[0]);
   const dayName = date.format('dddd');
@@ -30,22 +27,16 @@ const WeatherOverview = ({
 
   return (
     <section className='flex flex-col px-4 py-6 lg:w-3/12 lg:rounded-l-3xl lg:p-8'>
-      <header>
-        <nav className='relative'>
+      <header className='flex flex-col gap-4'>
+        <nav className='relative flex flex-col gap-4'>
           <h2 className='mr-7 text-3xl'>
             {city}, {country}
           </h2>
-          <button
-            className='absolute right-1 top-1'
-            onClick={() => toggleCity(city)}
-            aria-label='Switch City'
-          >
-            <ExchangeArrowIcon />
-          </button>
+          <p>
+            {dayName}, {dayOfTheMonth} {monthName}
+          </p>
+          <CitySelectInput />
         </nav>
-        <p>
-          {dayName}, {dayOfTheMonth} {monthName}
-        </p>
       </header>
       <main className='flex flex-row justify-center pb-6 pt-10 align-middle sm:py-12 lg:flex-col lg:py-0 lg:pt-6 lg:text-center'>
         <img

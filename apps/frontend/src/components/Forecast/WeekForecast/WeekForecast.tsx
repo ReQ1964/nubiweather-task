@@ -7,7 +7,7 @@ import { SwiperSlide } from 'swiper/react';
 import SwiperWrapper from '../../UI/SwiperWrapper';
 
 const WeekForecast = () => {
-  const currentCity = useContext(CurrentCityContext);
+  const { currentCity } = useContext(CurrentCityContext);
   const { data, error, isError, isLoading } = useForecastData(currentCity, 7);
 
   if (isLoading) return <div>Loading...</div>;
