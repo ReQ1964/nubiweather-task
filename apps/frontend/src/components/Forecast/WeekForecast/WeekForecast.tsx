@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 import { CurrentCityContext } from '@/App';
-import { useForecastData } from '@/hooks/useForecastData';
+import { useForecastData } from '@/hooks/useForecastData/useForecastData';
 import ForecastTile from '../ForecastTile/ForecastTile';
 import { SwiperSlide } from 'swiper/react';
 import SwiperWrapper from '../../UI/SwiperWrapper';

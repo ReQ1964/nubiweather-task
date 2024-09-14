@@ -1,5 +1,5 @@
 import WeatherOverview from './components/WeatherOverview';
-import { useTodayOverviewData } from './hooks/useTodayOverviewData';
+import { useTodayOverviewData } from './hooks/useTodayOverviewData/useTodayOverviewData';
 import ForecastPanel from './components/Forecast/ForecastPanel/ForecastPanel';
 import { createContext } from 'react';
 import { CityName } from 'shared-types/apiTypes';

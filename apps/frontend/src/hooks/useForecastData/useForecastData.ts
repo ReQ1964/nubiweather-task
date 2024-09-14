@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { API_KEY, API_URL } from '../constants/api';
+import { API_KEY, API_URL } from '@/constants/api';
 import { CityName, ForecastData } from 'shared-types/apiTypes';
 import { FetchForecastResult } from 'shared-schemas/apiSchemas';
 import { ZodError } from 'zod';

@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw';
 import { API_URL } from '@/constants/api';
+import { ForecastData, WeatherData } from 'shared-types/apiTypes';
 
-const mockForecastData = {
+export const mockForecastData: ForecastData = {
   forecast: {
     forecastday: [
       {
@@ -64,8 +65,32 @@ const mockForecastData = {
   },
 };
 
+export const mockOverviewData: WeatherData = {
+  location: {
+    name: 'Gliwice',
+    country: 'Poland',
+    localtime: '2024-09-14 10:00',
+  },
+  current: {
+    temp_c: 22.5,
+    condition: {
+      text: 'Partly Cloudy',
+      icon: 'icon',
+    },
+    humidity: 60,
+    uv: 5.5,
+    vis_km: 10,
+    wind_kph: 15,
+    precip_mm: 0.5,
+    heatindex_c: 23.1,
+  },
+};
+
 export const handlers = [
   http.get(`${API_URL}forecast.json`, () => {
     return HttpResponse.json(mockForecastData);
+  }),
+  http.get(`${API_URL}current.json`, () => {
+    return HttpResponse.json(mockOverviewData);
   }),
 ];

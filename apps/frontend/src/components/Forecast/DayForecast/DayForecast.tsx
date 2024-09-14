@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { SwiperSlide } from 'swiper/react';
 import SwiperWrapper from '../../UI/SwiperWrapper';
 
-import { useForecastData } from '@/hooks/useForecastData';
+import { useForecastData } from '@/hooks/useForecastData/useForecastData';
 import ForecastTile from '../ForecastTile/ForecastTile';
 import { CurrentCityContext } from '@/App';
 
