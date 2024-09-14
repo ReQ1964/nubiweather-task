@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 import { CurrentCityContext } from '@/App';
-import { useForecastData } from '@/hooks/useForecastData';
-import ForecastTile from './ForecastTile';
+import { useForecastData } from '@/hooks/useForecastData/useForecastData';
+import ForecastTile from '../ForecastTile/ForecastTile';
 import { SwiperSlide } from 'swiper/react';
-import SwiperWrapper from '../UI/SwiperWrapper';
+import SwiperWrapper from '../../UI/SwiperWrapper';
 
 const WeekForecast = () => {
   const currentCity = useContext(CurrentCityContext);

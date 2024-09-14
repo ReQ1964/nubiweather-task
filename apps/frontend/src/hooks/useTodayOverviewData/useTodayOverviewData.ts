@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { API_KEY, API_URL } from '../constants/api';
+import { API_KEY, API_URL } from '@/constants/api';
 import { FetchTodayOverviewResult } from 'shared-schemas/apiSchemas';
 import { CityName, WeatherData } from 'shared-types/apiTypes';
+import { ZodError } from 'zod';
 
 const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
   const res = await axios.get(`${API_URL}current.json`, {
@@ -12,9 +13,21 @@ const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
       q: city,
     },
   });
-  console.log(res.data);
-  const parsedData = FetchTodayOverviewResult.parse(res.data);
-  return parsedData;
+  try {
+    const parsedData = FetchTodayOverviewResult.parse(res.data);
+    return parsedData;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      const path = error.issues[0].path.join(' -> ');
+      const formattedError = `Error: ${error.issues[0].message} | [${path}]`;
+
+      console.error('Zod validation error:', formattedError);
+      throw new Error(formattedError);
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred');
+    }
+  }
 };
 
 export const useTodayOverviewData = (initialCity: CityName) => {

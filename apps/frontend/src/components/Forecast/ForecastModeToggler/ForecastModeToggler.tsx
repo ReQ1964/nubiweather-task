@@ -1,4 +1,4 @@
-import { ForecastMode } from './ForecastPanel';
+import { ForecastMode } from '../ForecastPanel/ForecastPanel';
 
 interface ForecastModeTogglerProps {
   forecastMode: ForecastMode;
@@ -25,6 +25,8 @@ const ForecastModeToggler = ({
             : 'text-gray-500'
         }`}
         onClick={setForecastToToday}
+        aria-pressed={forecastMode === 'today'}
+        aria-label='Today forecast mode'
       >
         Today
       </button>
@@ -35,6 +37,8 @@ const ForecastModeToggler = ({
             : 'text-gray-500'
         }`}
         onClick={setForecastToWeek}
+        aria-pressed={forecastMode === 'week'}
+        aria-label='Week forecast mode'
       >
         Week
       </button>
