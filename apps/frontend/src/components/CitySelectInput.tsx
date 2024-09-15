@@ -1,7 +1,13 @@
 import { useState, useContext } from 'react';
 import { CurrentCityContext } from '@/App';
 
+const MATCHES_ERROR = 'No matches found';
+const VALIDITY_ERROR = 'Select a valid city';
+
 type CityUnion = 'Gliwice' | 'Hamburg' | 'Katowice' | 'Warsaw';
+
+const isError = (suggestion: string) =>
+  suggestion === MATCHES_ERROR || suggestion === VALIDITY_ERROR;
 
 const CitySelectInput = () => {
   const { setCurrentCity } = useContext(CurrentCityContext);
@@ -25,23 +31,20 @@ const CitySelectInput = () => {
       );
 
       setSuggestions(
-        filteredSuggestions.length > 0
-          ? filteredSuggestions
-          : ['No matches found']
+        filteredSuggestions.length > 0 ? filteredSuggestions : [MATCHES_ERROR]
       );
-    } else {
-      setSuggestions([]);
-    }
+    } else setSuggestions([]);
   };
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!possibleValues.find((value) => value === inputValue)) {
-        setSuggestions(['Select a valid city']);
+        setSuggestions([VALIDITY_ERROR]);
         return;
       }
       setCurrentCity(inputValue);
       setInputValue('');
+      setSuggestions([]);
     }
   };
 
@@ -53,7 +56,7 @@ const CitySelectInput = () => {
 
   return (
     <div className='relative'>
-      <label htmlFor='city'>Choose city</label>
+      <label htmlFor='city'>Choose a city</label>
       <input
         type='text'
         id='city'
@@ -67,19 +70,16 @@ const CitySelectInput = () => {
       {suggestions.length > 0 && (
         <ul className='absolute mt-2 w-full rounded-b-lg bg-white shadow-lg'>
           {suggestions.slice(0, 4).map((suggestion) => (
-            <li
-              className={
-                suggestion === 'No matches found' ||
-                suggestion === 'Select a valid city'
-                  ? 'text-red-800'
-                  : ''
-              }
-              key={suggestion}
-            >
+            <li key={suggestion}>
               <button
                 type='button'
                 onClick={() => handleSuggestionClick(suggestion as CityUnion)}
-                className='w-full p-3 text-left duration-75 hover:scale-105'
+                disabled={isError(suggestion)}
+                className={`w-full p-3 text-left duration-75  ${
+                  isError(suggestion)
+                    ? 'cursor-not-allowed text-red-800'
+                    : 'hover:scale-105'
+                }`}
               >
                 {suggestion}
               </button>
