@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import { CurrentCityContext } from '@/App';
 import CitySuggestionItem from './CitySuggestionItem';
 import {
@@ -13,12 +13,10 @@ const CitySelectInput = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  const possibleValues: CityUnion[] = [
-    'Gliwice',
-    'Hamburg',
-    'Katowice',
-    'Warsaw',
-  ];
+  const possibleValues: CityUnion[] = useMemo(
+    () => ['Gliwice', 'Hamburg', 'Katowice', 'Warsaw'],
+    []
+  );
 
   useEffect(() => {
     const clearInputOnEscape = (e: KeyboardEvent) => {
@@ -32,21 +30,30 @@ const CitySelectInput = () => {
     return () => window.removeEventListener('keydown', clearInputOnEscape);
   }, []);
 
+  useEffect(() => {
+    if (inputValue.length === 0) {
+      setSuggestions([]);
+      return;
+    }
+
+    const delayInputTimeoutId = setTimeout(() => {
+      if (inputValue.length > 0) {
+        const filteredSuggestions = possibleValues.filter((suggestion) =>
+          suggestion.toLowerCase().includes(inputValue.toLowerCase())
+        );
+
+        setSuggestions(
+          filteredSuggestions.length > 0
+            ? filteredSuggestions
+            : [SUGGESTIONS_MATCH_ERROR]
+        );
+      }
+    }, 300);
+    return () => clearTimeout(delayInputTimeoutId);
+  }, [possibleValues, inputValue]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-
-    if (value.length > 0) {
-      const filteredSuggestions = possibleValues.filter((suggestion) =>
-        suggestion.toLowerCase().includes(value.toLowerCase())
-      );
-
-      setSuggestions(
-        filteredSuggestions.length > 0
-          ? filteredSuggestions
-          : [SUGGESTIONS_MATCH_ERROR]
-      );
-    } else setSuggestions([]);
+    setInputValue(e.target.value);
   };
 
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
