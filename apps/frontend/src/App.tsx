@@ -1,4 +1,4 @@
-import WeatherOverview from './components/WeatherOverview/WeatherOverview';
+import WeatherOverview from './components/Overview/WeatherOverview/WeatherOverview';
 import { useTodayOverviewData } from './hooks/useTodayOverviewData/useTodayOverviewData';
 import ForecastPanel from './components/Forecast/ForecastPanel/ForecastPanel';
 import { createContext } from 'react';

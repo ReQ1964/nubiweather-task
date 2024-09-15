@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import cityImg from '@/assets/img/city-bg.jpg';
-import CitySelectInput from './CitySelectInput';
+import CityAutocompleteInput from '../CityAutocompleteInput/CityAutocompleteInput';
 
 interface WeatherOverviewProps {
   city: string;
@@ -29,13 +29,15 @@ const WeatherOverview = ({
     <section className='flex flex-col px-4 py-6 lg:w-3/12 lg:rounded-l-3xl lg:p-8'>
       <header className='flex flex-col gap-4'>
         <nav className='relative flex flex-col gap-4'>
-          <h2 className='mr-7 text-3xl'>
-            {city}, {country}
-          </h2>
-          <p>
-            {dayName}, {dayOfTheMonth} {monthName}
-          </p>
-          <CitySelectInput />
+          <div>
+            <h2 className='mr-7 text-3xl'>
+              {city}, {country}
+            </h2>
+            <p>
+              {dayName}, {dayOfTheMonth} {monthName}
+            </p>
+          </div>
+          <CityAutocompleteInput />
         </nav>
       </header>
       <main className='flex flex-row justify-center pb-6 pt-10 align-middle sm:py-12 lg:flex-col lg:py-0 lg:pt-6 lg:text-center'>

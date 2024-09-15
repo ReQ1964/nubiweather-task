@@ -5,19 +5,19 @@ import {
 
 type CityUnion = 'Gliwice' | 'Hamburg' | 'Katowice' | 'Warsaw';
 
-interface CitySuggestionProps {
+interface CityAutocompleteSuggestionProps {
   suggestion: string;
   handleClick: (suggestion: CityUnion) => void;
 }
 
-const CitySuggestionItem = ({
+const isError = (suggestion: string) =>
+  suggestion === SUGGESTIONS_MATCH_ERROR ||
+  suggestion === SUGGESTIONS_VALIDITY_ERROR;
+
+const CityAutocompleteSuggestion = ({
   suggestion,
   handleClick,
-}: CitySuggestionProps) => {
-  const isError = (suggestion: string) =>
-    suggestion === SUGGESTIONS_MATCH_ERROR ||
-    suggestion === SUGGESTIONS_VALIDITY_ERROR;
-
+}: CityAutocompleteSuggestionProps) => {
   return (
     <li>
       <button
@@ -36,4 +36,4 @@ const CitySuggestionItem = ({
   );
 };
 
-export default CitySuggestionItem;
+export default CityAutocompleteSuggestion;
