@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { CurrentCityContext } from '@/App';
 
 const MATCHES_ERROR = 'No matches found';
@@ -20,6 +20,18 @@ const CitySelectInput = () => {
     'Katowice',
     'Warsaw',
   ];
+
+  useEffect(() => {
+    const clearInputOnEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setInputValue('');
+        setSuggestions([]);
+      }
+    };
+
+    window.addEventListener('keydown', clearInputOnEscape);
+    return () => window.removeEventListener('keydown', clearInputOnEscape);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
