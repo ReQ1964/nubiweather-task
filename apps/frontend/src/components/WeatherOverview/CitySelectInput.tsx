@@ -1,13 +1,12 @@
 import { useState, useContext, useEffect } from 'react';
 import { CurrentCityContext } from '@/App';
-
-const MATCHES_ERROR = 'No matches found';
-const VALIDITY_ERROR = 'Select a valid city';
+import CitySuggestionItem from './CitySuggestionItem';
+import {
+  SUGGESTIONS_MATCH_ERROR,
+  SUGGESTIONS_VALIDITY_ERROR,
+} from '@/constants/general';
 
 type CityUnion = 'Gliwice' | 'Hamburg' | 'Katowice' | 'Warsaw';
-
-const isError = (suggestion: string) =>
-  suggestion === MATCHES_ERROR || suggestion === VALIDITY_ERROR;
 
 const CitySelectInput = () => {
   const { setCurrentCity } = useContext(CurrentCityContext);
@@ -43,7 +42,9 @@ const CitySelectInput = () => {
       );
 
       setSuggestions(
-        filteredSuggestions.length > 0 ? filteredSuggestions : [MATCHES_ERROR]
+        filteredSuggestions.length > 0
+          ? filteredSuggestions
+          : [SUGGESTIONS_MATCH_ERROR]
       );
     } else setSuggestions([]);
   };
@@ -51,7 +52,7 @@ const CitySelectInput = () => {
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (!possibleValues.find((value) => value === inputValue)) {
-        setSuggestions([VALIDITY_ERROR]);
+        setSuggestions([SUGGESTIONS_VALIDITY_ERROR]);
         return;
       }
       setCurrentCity(inputValue);
@@ -82,20 +83,11 @@ const CitySelectInput = () => {
       {suggestions.length > 0 && (
         <ul className='absolute mt-2 w-full rounded-b-lg bg-white shadow-lg'>
           {suggestions.slice(0, 4).map((suggestion) => (
-            <li key={suggestion}>
-              <button
-                type='button'
-                onClick={() => handleSuggestionClick(suggestion as CityUnion)}
-                disabled={isError(suggestion)}
-                className={`w-full p-3 text-left duration-75  ${
-                  isError(suggestion)
-                    ? 'cursor-not-allowed text-red-800'
-                    : 'hover:scale-105'
-                }`}
-              >
-                {suggestion}
-              </button>
-            </li>
+            <CitySuggestionItem
+              key={suggestion}
+              suggestion={suggestion}
+              handleClick={handleSuggestionClick}
+            />
           ))}
         </ul>
       )}
