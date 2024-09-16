@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { API_KEY, API_URL } from '@/constants/api';
-import { CityName, ForecastData } from 'shared-types/apiTypes';
 import { FetchForecastResult } from 'shared-schemas/apiSchemas';
 import { ZodError } from 'zod';
+import { ForecastData } from 'shared-types/apiTypes';
 
-const fetchForecastData = async (city: CityName, days: number) => {
+const fetchForecastData = async (city: string, days: number) => {
   const res = await axios.get(`${API_URL}forecast.json`, {
     params: {
       key: API_KEY,
@@ -32,7 +32,7 @@ const fetchForecastData = async (city: CityName, days: number) => {
   }
 };
 
-export const useForecastData = (currentCity: CityName, days: number) => {
+export const useForecastData = (currentCity: string, days: number) => {
   const { isLoading, isError, data, error } = useQuery<ForecastData, Error>({
     queryKey: ['forecastData', currentCity, days],
     queryFn: () => fetchForecastData(currentCity, days),

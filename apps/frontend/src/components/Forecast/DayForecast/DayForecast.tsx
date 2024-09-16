@@ -34,7 +34,7 @@ const filterHours = (
 };
 
 const DayForecast = () => {
-  const currentCity = useContext(CurrentCityContext);
+  const { currentCity } = useContext(CurrentCityContext);
   const { data, error, isError, isLoading } = useForecastData(currentCity, 2);
 
   if (isLoading) return <div>Loading...</div>;

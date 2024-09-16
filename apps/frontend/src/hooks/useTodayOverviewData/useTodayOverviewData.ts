@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { API_KEY, API_URL } from '@/constants/api';
 import { FetchTodayOverviewResult } from 'shared-schemas/apiSchemas';
-import { CityName, WeatherData } from 'shared-types/apiTypes';
+import { WeatherData } from 'shared-types/apiTypes';
 import { ZodError } from 'zod';
 
-const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
+const fetchWeatherData = async (city: string): Promise<WeatherData> => {
   const res = await axios.get(`${API_URL}current.json`, {
     params: {
       key: API_KEY,
@@ -30,26 +30,18 @@ const fetchWeatherData = async (city: CityName): Promise<WeatherData> => {
   }
 };
 
-export const useTodayOverviewData = (initialCity: CityName) => {
-  const [currentCity, setCurrentCity] = useState<CityName>(initialCity);
-
+export const useTodayOverviewData = (initialCity: string) => {
+  const [currentCity, setCurrentCity] = useState<string>(initialCity);
   const { isLoading, isError, data, error } = useQuery<WeatherData, Error>({
     queryKey: ['overviewData', currentCity],
     queryFn: () => fetchWeatherData(currentCity),
   });
-
-  const toggleCity = () => {
-    setCurrentCity((prevCity: CityName) =>
-      prevCity === 'Gliwice' ? 'Hamburg' : 'Gliwice'
-    );
-  };
-
   return {
     isLoading,
     isError,
     data,
     error,
-    toggleCity,
+    setCurrentCity,
     currentCity,
   };
 };

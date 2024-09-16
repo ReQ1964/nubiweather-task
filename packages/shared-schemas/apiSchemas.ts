@@ -7,7 +7,7 @@ const conditionSchema = z.object({
 
 export const FetchTodayOverviewResult = z.object({
   location: z.object({
-    name: z.enum(['Gliwice', 'Hamburg']),
+    name: z.string(),
     country: z.string(),
     localtime: z.string(),
   }),

@@ -1,14 +1,21 @@
-import WeatherOverview from './components/WeatherOverview';
+import WeatherOverview from './components/Overview/WeatherOverview/WeatherOverview';
 import { useTodayOverviewData } from './hooks/useTodayOverviewData/useTodayOverviewData';
 import ForecastPanel from './components/Forecast/ForecastPanel/ForecastPanel';
 import { createContext } from 'react';
-import { CityName } from 'shared-types/apiTypes';
 import TodayHighlight from './components/Highlight/TodayHighlight/TodayHighlight';
 
-export const CurrentCityContext = createContext<CityName>('Gliwice');
+interface CityContextInterface {
+  currentCity: string;
+  setCurrentCity: (city: string) => void;
+}
+
+export const CurrentCityContext = createContext<CityContextInterface>({
+  currentCity: 'Gliwice',
+  setCurrentCity: () => {},
+});
 
 function App(): JSX.Element {
-  const { data, error, isError, isLoading, toggleCity, currentCity } =
+  const { data, error, isError, isLoading, setCurrentCity, currentCity } =
     useTodayOverviewData('Gliwice');
 
   if (isLoading) {
@@ -36,7 +43,7 @@ function App(): JSX.Element {
   } = data.current;
 
   return (
-    <CurrentCityContext.Provider value={currentCity}>
+    <CurrentCityContext.Provider value={{ currentCity, setCurrentCity }}>
       <main className='max-w-5xl shadow-xl lg:flex lg:justify-center lg:rounded-3xl lg:align-middle xl:max-w-6xl'>
         <WeatherOverview
           city={name}
@@ -44,7 +51,6 @@ function App(): JSX.Element {
           localtime={localtime}
           temperature={temp_c}
           condition={condition}
-          toggleCity={toggleCity}
         />
         <section className='flex flex-col gap-12 bg-gray-200 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
           <ForecastPanel />
