@@ -50,7 +50,7 @@ function App(): JSX.Element {
 
   return (
     <CurrentCityContext.Provider value={{ currentCity, setCurrentCity }}>
-      <main className='max-w-5xl shadow-xl lg:flex lg:justify-center lg:rounded-3xl lg:align-middle xl:max-w-6xl'>
+      <main className='max-w-5xl shadow-xl lg:flex lg:justify-center lg:rounded-3xl lg:align-middle xl:w-[1150px] xl:max-w-6xl'>
         <WeatherOverview
           city={name}
           country={country}
