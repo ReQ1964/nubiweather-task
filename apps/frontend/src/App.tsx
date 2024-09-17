@@ -3,6 +3,8 @@ import { useTodayOverviewData } from './hooks/useTodayOverviewData/useTodayOverv
 import ForecastPanel from './components/Forecast/ForecastPanel/ForecastPanel';
 import { createContext } from 'react';
 import TodayHighlight from './components/Highlight/TodayHighlight/TodayHighlight';
+import LoadingSpinner from './assets/icons/LoadingSpinner';
+import { TodayHighlightSkeleton } from './components/Highlight/TodayHighlightTile/TodayHighlightTileSkeleton';
 
 interface CityContextInterface {
   currentCity: string;
@@ -19,7 +21,11 @@ function App(): JSX.Element {
     useTodayOverviewData('Gliwice');
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='flex h-screen items-center justify-center'>
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (isError) {
@@ -54,14 +60,18 @@ function App(): JSX.Element {
         />
         <section className='flex flex-col gap-12 bg-gray-200 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
           <ForecastPanel />
-          <TodayHighlight
-            heatIndex={heatindex_c}
-            uv={uv}
-            humidity={humidity}
-            precipitation={precip_mm}
-            visibility={vis_km}
-            windSpeed={wind_kph}
-          />
+          {isLoading ? (
+            <TodayHighlightSkeleton />
+          ) : (
+            <TodayHighlight
+              heatIndex={heatindex_c}
+              uv={uv}
+              humidity={humidity}
+              precipitation={precip_mm}
+              visibility={vis_km}
+              windSpeed={wind_kph}
+            />
+          )}
         </section>
       </main>
     </CurrentCityContext.Provider>

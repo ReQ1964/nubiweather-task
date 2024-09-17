@@ -8,6 +8,7 @@ import ForecastTile from '../ForecastTile/ForecastTile';
 import { CurrentCityContext } from '@/App';
 
 import 'swiper/css';
+import ForecastTileSkeleton from '../ForecastTile/ForecastTileSkeleton';
 
 type ForecastHour = {
   condition: {
@@ -37,7 +38,15 @@ const DayForecast = () => {
   const { currentCity } = useContext(CurrentCityContext);
   const { data, error, isError, isLoading } = useForecastData(currentCity, 2);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className='flex gap-8 overflow-hidden'>
+        <ForecastTileSkeleton />
+        <ForecastTileSkeleton />
+        <ForecastTileSkeleton />
+      </div>
+    );
+  }
 
   if (isError)
     return <div>{error?.message || 'An unexpected error occurred'}</div>;

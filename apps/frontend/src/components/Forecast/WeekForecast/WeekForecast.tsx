@@ -5,12 +5,21 @@ import { useForecastData } from '@/hooks/useForecastData/useForecastData';
 import ForecastTile from '../ForecastTile/ForecastTile';
 import { SwiperSlide } from 'swiper/react';
 import SwiperWrapper from '../../UI/SwiperWrapper';
+import ForecastTileSkeleton from '../ForecastTile/ForecastTileSkeleton';
 
 const WeekForecast = () => {
   const { currentCity } = useContext(CurrentCityContext);
   const { data, error, isError, isLoading } = useForecastData(currentCity, 7);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className='flex gap-8 overflow-hidden'>
+        <ForecastTileSkeleton />
+        <ForecastTileSkeleton />
+        <ForecastTileSkeleton />
+      </div>
+    );
+  }
 
   if (isError)
     return <div>{error?.message || 'An unexpected error occurred'}</div>;
