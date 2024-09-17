@@ -61,6 +61,6 @@ describe('DayForecast', () => {
       </QueryClientProvider>
     );
 
-    await screen.findByText(/request failed with status code 400/i);
+    await screen.findByText(/Network error/i);
   });
 });

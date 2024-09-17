@@ -7,40 +7,48 @@ import { WeatherData } from 'shared-types/apiTypes';
 import { ZodError } from 'zod';
 
 const fetchWeatherData = async (city: string): Promise<WeatherData> => {
-  const res = await axios.get(`${API_URL}current.json`, {
-    params: {
-      key: API_KEY,
-      q: city,
-    },
-  });
   try {
-    const parsedData = FetchTodayOverviewResult.parse(res.data);
-    return parsedData;
-  } catch (error) {
-    if (error instanceof ZodError) {
-      const path = error.issues[0].path.join(' -> ');
-      const formattedError = `Error: ${error.issues[0].message} | [${path}]`;
+    const { data } = await axios.get(`${API_URL}current.json`, {
+      params: {
+        key: API_KEY,
+        q: city,
+      },
+    });
 
-      console.error('Zod validation error:', formattedError);
-      throw new Error(formattedError);
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred');
+    return FetchTodayOverviewResult.parse(data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Network error:', error.message);
+      throw new Error('Network error occurred while fetching weather data.');
     }
+
+    if (error instanceof ZodError) {
+      const path = error.issues
+        .map((issue) => issue.path.join(' -> '))
+        .join(', ');
+      const formattedError = `Zod validation error: ${error.message} | Path: ${path}`;
+      console.error(formattedError);
+      throw new Error(formattedError);
+    }
+
+    console.error('Unexpected error:', error);
+    throw new Error('An unexpected error occurred');
   }
 };
 
 export const useTodayOverviewData = (initialCity: string) => {
   const [currentCity, setCurrentCity] = useState<string>(initialCity);
-  const { isLoading, isError, data, error } = useQuery<WeatherData, Error>({
+
+  const { data, error, isLoading, isError } = useQuery<WeatherData, Error>({
     queryKey: ['overviewData', currentCity],
     queryFn: () => fetchWeatherData(currentCity),
   });
+
   return {
-    isLoading,
-    isError,
     data,
     error,
+    isLoading,
+    isError,
     setCurrentCity,
     currentCity,
   };

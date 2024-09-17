@@ -14,9 +14,11 @@ const WeekForecast = () => {
   if (isLoading) {
     return (
       <div className='flex gap-8 overflow-hidden'>
-        <ForecastTileSkeleton />
-        <ForecastTileSkeleton />
-        <ForecastTileSkeleton />
+        {Array(3)
+          .fill(null)
+          .map((_, i) => (
+            <ForecastTileSkeleton key={i} />
+          ))}
       </div>
     );
   }
@@ -26,10 +28,9 @@ const WeekForecast = () => {
 
   if (!data) return <div>No data available</div>;
 
-  const days = data.forecast.forecastday.length;
+  const forecastDays = data.forecast.forecastday;
   const dataWithoutCurrentDay =
-    days > 1 ? data.forecast.forecastday.slice(1) : [];
-
+    forecastDays.length > 1 ? forecastDays.slice(1) : [];
   return (
     <SwiperWrapper>
       {dataWithoutCurrentDay.map((item) => {
