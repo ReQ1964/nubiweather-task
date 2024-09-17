@@ -25,5 +25,6 @@ module.exports = {
     ],
     'react/react-in-jsx-scope': 'off',
     'testing-library/no-render-in-lifecycle': 'off',
+    'testing-library/prefer-screen-queries': 'off',
   },
 };
