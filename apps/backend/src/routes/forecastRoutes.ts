@@ -2,6 +2,6 @@ import { Router } from 'express';
 
 const forecastRouter = Router();
 
-forecastRouter.get('/');
+forecastRouter.route('/').get();
 
 export default forecastRouter;

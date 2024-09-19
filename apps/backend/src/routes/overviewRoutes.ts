@@ -1,18 +1,11 @@
 import { Router } from 'express';
+import {
+  getTodayOverview,
+  checkForQueryErrors,
+} from '../controllers/overviewController';
 
 const overviewRouter = Router();
 
-overviewRouter.get('/', (req, res) => {
-  const { city } = req.query;
-  if (!city) {
-    res.status(404);
-    const error = new Error('City query parameter is required!');
-    res.json({
-      message: error.message,
-      stack: error.stack,
-    });
-  }
-  res.json(city);
-});
+overviewRouter.route('/').get(checkForQueryErrors, getTodayOverview);
 
 export default overviewRouter;
