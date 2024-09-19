@@ -8,6 +8,7 @@ import ForecastTile from '../ForecastTile/ForecastTile';
 import { CurrentCityContext } from '@/App';
 
 import 'swiper/css';
+import ForecastTileSkeleton from '../ForecastTile/ForecastTileSkeleton';
 
 type ForecastHour = {
   condition: {
@@ -20,24 +21,32 @@ type ForecastHour = {
 
 const filterHours = (
   hours: ForecastHour[],
-  dayIndex: number,
+  isToday: boolean,
   currentHour: string
 ) => {
-  return hours
-    .filter(({ time }) => {
-      const hour = dayjs(time).format('HH:00');
-      return dayIndex === 0 ? hour >= currentHour : true;
-      // return today's forecast only ahead of current time, not for the whole day
-    })
-    .slice(0, dayIndex === 1 ? 7 : undefined);
-  // return tomorrow's forecast only for the first 7 hours
+  const filteredHours = hours.filter(({ time }) => {
+    const hour = dayjs(time).format('HH:00');
+    return isToday ? hour >= currentHour : true;
+  });
+
+  return isToday ? filteredHours : filteredHours.slice(0, 7); // Limit to 7 hours for tomorrow
 };
 
 const DayForecast = () => {
   const { currentCity } = useContext(CurrentCityContext);
   const { data, error, isError, isLoading } = useForecastData(currentCity, 2);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className='flex gap-8 overflow-hidden'>
+        {Array(3)
+          .fill(null)
+          .map((_, i) => (
+            <ForecastTileSkeleton key={i} />
+          ))}
+      </div>
+    );
+  }
 
   if (isError)
     return <div>{error?.message || 'An unexpected error occurred'}</div>;
@@ -47,15 +56,17 @@ const DayForecast = () => {
   const { forecastday: forecastDays } = data.forecast;
   const currentHour = dayjs().format('HH:00');
 
+  const filteredForecasts = forecastDays.map((day, index) =>
+    filterHours(day.hour, index === 0, currentHour)
+  );
+
   return (
     <SwiperWrapper>
-      {forecastDays.map((day, index) => {
-        const hours = filterHours(day.hour, index, currentHour);
-
-        return hours.map(({ time, temp_c, condition }) => {
+      {filteredForecasts.map((hours) =>
+        hours.map(({ time, temp_c, condition }, hourIndex) => {
           const hour = dayjs(time).format('HH:00');
           return (
-            <SwiperSlide key={time} data-testid='data-out'>
+            <SwiperSlide key={`${time}-${hourIndex}`} data-testid='data-out'>
               <ForecastTile
                 topInfo={hour}
                 temperature={temp_c}
@@ -64,8 +75,8 @@ const DayForecast = () => {
               />
             </SwiperSlide>
           );
-        });
-      })}
+        })
+      )}
     </SwiperWrapper>
   );
 };

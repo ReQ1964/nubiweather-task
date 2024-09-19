@@ -9,39 +9,28 @@ const ForecastModeToggler = ({
   forecastMode,
   setForecastMode,
 }: ForecastModeTogglerProps) => {
-  const setForecastToToday = () => {
-    setForecastMode('today');
-  };
-  const setForecastToWeek = () => {
-    setForecastMode('week');
-  };
+  const buttons = [
+    { mode: 'today', label: 'Today' },
+    { mode: 'week', label: 'Week' },
+  ];
 
   return (
     <div className='mb-6 flex flex-row gap-3'>
-      <button
-        className={`relative text-lg font-bold ${
-          forecastMode === 'today'
-            ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-            : 'text-gray-500'
-        }`}
-        onClick={setForecastToToday}
-        aria-pressed={forecastMode === 'today'}
-        aria-label='Today forecast mode'
-      >
-        Today
-      </button>
-      <button
-        className={`relative text-lg font-bold ${
-          forecastMode === 'week'
-            ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-            : 'text-gray-500'
-        }`}
-        onClick={setForecastToWeek}
-        aria-pressed={forecastMode === 'week'}
-        aria-label='Week forecast mode'
-      >
-        Week
-      </button>
+      {buttons.map(({ mode, label }) => (
+        <button
+          key={mode}
+          className={`relative text-lg font-bold ${
+            forecastMode === mode
+              ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
+              : 'text-gray-500'
+          }`}
+          onClick={() => setForecastMode(mode as ForecastMode)}
+          aria-pressed={forecastMode === mode}
+          aria-label={`${label} forecast mode`}
+        >
+          {label}
+        </button>
+      ))}
     </div>
   );
 };

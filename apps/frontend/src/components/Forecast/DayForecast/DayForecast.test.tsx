@@ -45,7 +45,7 @@ describe('DayForecast', () => {
       </QueryClientProvider>
     );
 
-    await screen.findByText(/error: required/i);
+    await screen.findByText(/zod validation error/i);
   });
 
   it('should throw an error when API returns 400', async () => {
@@ -61,6 +61,6 @@ describe('DayForecast', () => {
       </QueryClientProvider>
     );
 
-    await screen.findByText(/request failed with status code 400/i);
+    await screen.findByText(/Network error/i);
   });
 });
