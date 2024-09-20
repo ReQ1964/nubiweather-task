@@ -2,9 +2,9 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
-import * as middlewares from './middlewares';
+import * as middlewares from './middlewares/errorCheckers';
 
-import overviewRouter from './routes/overviewRoutes';
+import currentWeatherRouter from './routes/currentWeatherRoutes';
 import forecastRouter from './routes/forecastRoutes';
 
 require('dotenv').config();
@@ -16,7 +16,9 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/overview', overviewRouter);
+app.use(middlewares.checkForCityParameter);
+
+app.use('/currentWeather', currentWeatherRouter);
 app.use('/forecast', forecastRouter);
 
 app.use(middlewares.notFound);
