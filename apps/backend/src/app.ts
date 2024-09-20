@@ -5,6 +5,7 @@ import cors from 'cors';
 import * as middlewares from './middlewares/errorCheckers';
 
 import currentWeatherRouter from './routes/currentWeatherRoutes';
+import todayHighlightRouter from './routes/todayHighlightRoutes';
 import forecastRouter from './routes/forecastRoutes';
 
 require('dotenv').config();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(middlewares.checkForCityParameter);
 
 app.use('/currentWeather', currentWeatherRouter);
+app.use('/todayHighlight', todayHighlightRouter);
 app.use('/forecast', forecastRouter);
 
 app.use(middlewares.notFound);

@@ -19,9 +19,13 @@ model WeatherData {
   country   String // Location country
   localtime DateTime // Location local time
 
-  temp_c      Float // Current temperature
-  condition   String // Weather condition text
-  icon        String // Condition icon
+  temp_c    Float // Current temperature
+  condition String // Weather condition text
+  icon      String // Condition icon
+}
+
+model HighlightData {
+  id          Int   @id @default(autoincrement())
   humidity    Int // Humidity percentage
   uv          Float // UV index
   vis_km      Float // Visibility in kilometers

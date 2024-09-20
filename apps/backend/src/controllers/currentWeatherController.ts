@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { FetchTodayOverviewResult } from 'shared-schemas/apiSchemas';
+import { CurrentWeatherResult } from '../../schema/currentWeatherSchema';
+import dayjs from 'dayjs';
+
 import { prisma } from '../prismaClient';
 
 const flattenCurrentWeatherObject = (parsedData: any) => {
@@ -20,8 +22,24 @@ const flattenCurrentWeatherObject = (parsedData: any) => {
   return finalObj;
 };
 
+const compareTime = (inputTime: string): boolean => {
+  const parsedTime = dayjs(inputTime);
+  const currentTime = dayjs();
+
+  return currentTime.isAfter(parsedTime.add(30, 'minute'));
+};
+
 export const getCurrentWeather = async (req: Request, res: Response) => {
   const wData = await prisma.weatherData.findFirst();
+
+  if (wData) {
+    const isTimeOutdated = compareTime(wData.localtime.toString());
+
+    if (!isTimeOutdated) {
+      res.json(wData);
+      return;
+    }
+  }
 
   const { city } = req.query;
   const { data } = await axios.get(`${process.env.API_URL}/current.json`, {
@@ -32,9 +50,10 @@ export const getCurrentWeather = async (req: Request, res: Response) => {
     },
   });
 
-  const parsedData = FetchTodayOverviewResult.parse(data);
+  const parsedData = CurrentWeatherResult.parse(data);
   const flattenedData = flattenCurrentWeatherObject(parsedData);
-  // await prisma.weatherData.create({ data: flattenedData });
 
-  res.json(flattenCurrentWeatherObject(wData));
+  await prisma.weatherData.update({ where: { id: 1 }, data: flattenedData });
+
+  res.json(flattenedData);
 };
