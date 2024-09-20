@@ -1,10 +1,7 @@
 import app from './app';
 import { prisma } from './prismaClient';
 
-async function main() {
-  const weatherData = await prisma.weatherData.findMany();
-  console.log(weatherData);
-}
+async function main() {}
 main()
   .then(async () => {
     await prisma.$disconnect();
