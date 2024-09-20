@@ -10,7 +10,7 @@ services:
     environment:
       POSTGRES_PASSWORD: example
     ports:
-      - '5432:5432'
+      - '8000:5432'
 
   adminer:
     image: adminer
@@ -18,22 +18,17 @@ services:
     ports:
       - 8080:8080
 
-  express-app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - '5000:5000'
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=example
-    depends_on:
-      - db
-    volumes:
-      - .:/app
-      - /app/node_modules
+  # express-app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #     - '5000:5000'
+  #   depends_on:
+  #     - db
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
 
 volumes:
   pg_data:
