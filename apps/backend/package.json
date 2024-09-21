@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "dev:docker": "nodemon -L src/index.ts",
     "build": "tsc",
     "start:dist": "node dist/src/index.js",
@@ -25,6 +25,7 @@
     "morgan": "^1.10.0",
     "shared-schemas": "workspace:*",
     "shared-types": "workspace:*",
+    "tsconfig-paths": "^4.2.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

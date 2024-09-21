@@ -25,7 +25,8 @@ model WeatherData {
 }
 
 model HighlightData {
-  id          Int   @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
+  localtime   DateTime // Location local time
   humidity    Int // Humidity percentage
   uv          Float // UV index
   vis_km      Float // Visibility in kilometers
