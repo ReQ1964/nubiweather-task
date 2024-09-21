@@ -5,7 +5,7 @@ import ErrorResponse from '../interfaces/ErrorResponse';
 export const checkForCityParameter = (
   req: Request,
   _res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { city } = req.query;
   !city ? next(new Error('City query parameter is required!')) : next();
@@ -22,7 +22,7 @@ export function errorHandler(
   err: Error,
   _req: Request,
   res: Response<ErrorResponse>,
-  _next: NextFunction
+  _next: NextFunction,
 ) {
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);

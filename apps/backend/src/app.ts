@@ -2,13 +2,14 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import * as middlewares from './middlewares/errorCheckers';
 
 import currentWeatherRouter from './routes/currentWeatherRoutes';
 import todayHighlightRouter from './routes/todayHighlightRoutes';
 import forecastRouter from './routes/forecastRoutes';
 
-require('dotenv').config();
+dotenv.config();
 
 const app = express();
 

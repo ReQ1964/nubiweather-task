@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs from 'dayjs';
 
 export const compareTime = (inputTime: string): boolean => {
@@ -7,10 +8,10 @@ export const compareTime = (inputTime: string): boolean => {
   return currentTime.isAfter(parsedTime.add(30, 'minute'));
 };
 
-export const flattenTodayData = (parsedData: any) => {
+export const flattenTodayData = <T, R>(parsedData: T): R => {
   const finalObj: any = {};
 
-  const flatten = (obj: any) => {
+  const flatten = (obj: any): void => {
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === 'object' && !Array.isArray(value)) {
         flatten(value);

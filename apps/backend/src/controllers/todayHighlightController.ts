@@ -2,9 +2,17 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 import { prisma } from '@/prismaClient';
 import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
-import { TodayHighlightResult } from '../../schema/todayHighlightSchema';
+import {
+  TodayHighlightSchema,
+  TodayHiglightSchemaType,
+  FlattenedTodayHighlightSchemaType,
+  FlattenedTodayHighlightSchema,
+} from '../../schema/todayHighlightSchema';
 
-export const getTodayHighlight = async (req: Request, res: Response) => {
+export const getTodayHighlight = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   const { city } = req.query;
 
   const highlightData = await prisma.highlightData.findFirst();
@@ -26,19 +34,22 @@ export const getTodayHighlight = async (req: Request, res: Response) => {
     },
   });
 
-  const parsedData = TodayHighlightResult.parse(data);
-  const flattenedData = flattenTodayData(parsedData);
+  const parsedData = TodayHighlightSchema.parse(data);
+  const flattenedData = flattenTodayData<
+  TodayHiglightSchemaType,
+  FlattenedTodayHighlightSchemaType
+  >(parsedData);
 
-  const isHighlightDataInDB = await prisma.highlightData.findFirst();
+  const validatedData = FlattenedTodayHighlightSchema.parse(flattenedData);
 
-  if (!isHighlightDataInDB as boolean) {
+  if (highlightData) {
     await prisma.highlightData.create({
-      data: flattenedData,
+      data: validatedData,
     });
   } else {
     await prisma.highlightData.update({
       where: { id: 1 },
-      data: flattenedData,
+      data: validatedData,
     });
   }
 

@@ -1,10 +1,18 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
-import { CurrentWeatherResult } from '../../schema/currentWeatherSchema';
+import {
+  CurrentWeatherSchema,
+  CurrentWeatherSchemaType,
+  FlattenedCurrentWeatherSchema,
+  FlattenedCurrentWeatherSchemaType,
+} from '../../schema/currentWeatherSchema';
 import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
 import { prisma } from '../prismaClient';
 
-export const getCurrentWeather = async (req: Request, res: Response) => {
+export const getCurrentWeather = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   const { city } = req.query;
   const weatherData = await prisma.weatherData.findFirst();
 
@@ -25,21 +33,24 @@ export const getCurrentWeather = async (req: Request, res: Response) => {
     },
   });
 
-  const parsedData = CurrentWeatherResult.parse(data);
-  const flattenedData = flattenTodayData(parsedData);
+  const parsedData = CurrentWeatherSchema.parse(data);
+  const flattenedData = flattenTodayData<
+  CurrentWeatherSchemaType,
+  FlattenedCurrentWeatherSchemaType
+  >(parsedData);
 
-  const isWeatherDataInDB = await prisma.weatherData.findFirst();
+  const validatedData = FlattenedCurrentWeatherSchema.parse(flattenedData);
 
-  if (!isWeatherDataInDB as boolean) {
+  if (!weatherData as boolean) {
     await prisma.weatherData.create({
-      data: flattenedData,
+      data: validatedData,
     });
   } else {
     await prisma.weatherData.update({
       where: { id: 1 },
-      data: flattenedData,
+      data: validatedData,
     });
   }
 
-  res.json(flattenedData);
+  res.json(validatedData);
 };
