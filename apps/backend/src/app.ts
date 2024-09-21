@@ -1,28 +1,28 @@
-import express from "express";
-import morgan from "morgan";
-import helmet from "helmet";
-import cors from "cors";
+import express from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import * as middlewares from './middlewares/errorCheckers';
 
-import * as middlewares from "./middlewares";
-import api from "./api";
-import MessageResponse from "./interfaces/MessageResponse";
+import currentWeatherRouter from './routes/currentWeatherRoutes';
+import todayHighlightRouter from './routes/todayHighlightRoutes';
+import forecastRouter from './routes/forecastRoutes';
 
-require("dotenv").config();
+dotenv.config();
 
 const app = express();
 
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.get<{}, MessageResponse>("/", (req, res) => {
-  res.json({
-    message: "NubiWeather API",
-  });
-});
+app.use(middlewares.checkForCityParameter);
 
-app.use("/api/v1", api);
+app.use('/currentWeather', currentWeatherRouter);
+app.use('/todayHighlight', todayHighlightRouter);
+app.use('/forecast', forecastRouter);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
