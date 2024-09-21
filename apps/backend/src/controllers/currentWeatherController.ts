@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 import {
-  CurrentWeatherSchema,
-  CurrentWeatherSchemaType,
-  FlattenedCurrentWeatherSchema,
-  FlattenedCurrentWeatherSchemaType,
-} from '../../schema/currentWeatherSchema';
+  UnFlattenedCurrentWeatherSchema,
+  UnFlattenedCurrentWeatherSchemaType,
+} from '@/schema/weatherApi';
+import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';
+import { CurrentWeatherSchemaType } from 'shared-types/apiTypes';
 import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
 import { prisma } from '../prismaClient';
 
@@ -33,13 +33,13 @@ export const getCurrentWeather = async (
     },
   });
 
-  const parsedData = CurrentWeatherSchema.parse(data);
+  const parsedData = UnFlattenedCurrentWeatherSchema.parse(data);
   const flattenedData = flattenTodayData<
-  CurrentWeatherSchemaType,
-  FlattenedCurrentWeatherSchemaType
+    UnFlattenedCurrentWeatherSchemaType,
+    CurrentWeatherSchemaType
   >(parsedData);
 
-  const validatedData = FlattenedCurrentWeatherSchema.parse(flattenedData);
+  const validatedData = CurrentWeatherSchema.parse(flattenedData);
 
   if (!weatherData as boolean) {
     await prisma.weatherData.create({

@@ -32,6 +32,7 @@
     ],
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/indent": "off",
     "node/no-unsupported-features/es-syntax": "off",
     "node/no-missing-import": "off"
   },
