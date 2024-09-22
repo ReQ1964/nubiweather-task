@@ -38,3 +38,59 @@ export const UnFlattenedCurrentWeatherSchema = z.object({
 export type UnFlattenedCurrentWeatherSchemaType = z.infer<
   typeof UnFlattenedCurrentWeatherSchema
 >;
+
+export const UnFlattenedOneDayForecastSchema = z.object({
+  forecast: z.object({
+    forecastday: z.array(
+      z.object({
+        date: z.string(),
+        hour: z.array(
+          z.object({
+            time: z.string(),
+            temp_c: z.number(),
+            condition: conditionSchema,
+          }),
+        ),
+      }),
+    ),
+  }),
+});
+
+export type UnFlattenedOneDayForecastSchemaType = z.infer<
+  typeof UnFlattenedOneDayForecastSchema
+>;
+
+export const OneDayForecastSchema = z.array(
+  z.object({
+    date: z.string(),
+    timestamp: z.string().transform((val) => new Date(val).toISOString()),
+    hourForecasts: z.array(
+      z.object({
+        hour: z.string(),
+        temp_c: z.number(),
+        condition: z.string(),
+        icon: z.string(),
+      }),
+    ),
+  }),
+);
+
+export type OneDayForecastSchemaType = z.infer<typeof OneDayForecastSchema>;
+
+export const UnFlattenedWeekForecastSchema = z.object({
+  forecast: z.object({
+    forecastday: z.array(
+      z.object({
+        date: z.string(),
+        day: z.object({
+          avgtemp_c: z.number(),
+          condition: conditionSchema,
+        }),
+      }),
+    ),
+  }),
+});
+
+export type UnFlattenedWeekForecastSchemaType = z.infer<
+  typeof UnFlattenedOneDayForecastSchema
+>;

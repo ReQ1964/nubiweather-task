@@ -34,3 +34,20 @@ model HighlightData {
   precip_mm   Float // Precipitation in millimeters
   heatindex_c Float // Heat index in Celsius
 }
+
+model ForecastDay {
+  id            Int            @id @default(autoincrement())
+  date          String
+  timestamp     DateTime
+  hourForecasts HourForecast[]
+}
+
+model HourForecast {
+  id            Int         @id @default(autoincrement())
+  hour          String
+  temp_c        Float
+  condition     String
+  icon          String
+  forecast      ForecastDay @relation(fields: [forecastDayId], references: [id])
+  forecastDayId Int
+}

@@ -37,9 +37,9 @@ export const FetchForecastResult = z.object({
             time: z.string(),
             temp_c: z.number(),
             condition: conditionSchema,
-          })
+          }),
         ),
-      })
+      }),
     ),
   }),
 });
