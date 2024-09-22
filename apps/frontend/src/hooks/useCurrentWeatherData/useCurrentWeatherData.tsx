@@ -1,20 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { API_KEY, API_URL } from '@/constants/api';
-import { FetchTodayOverviewResult } from 'shared-schemas/apiSchemas';
-import { WeatherData } from 'shared-types/apiTypes';
+import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';
+import { CurrentWeatherSchemaType } from 'shared-types/apiTypes';
 import { ZodError } from 'zod';
 
-const fetchWeatherData = async (city: string): Promise<WeatherData> => {
+const fetchCurrentWeatherData = async (
+  city: string,
+): Promise<CurrentWeatherSchemaType> => {
   try {
-    const { data } = await axios.get(`${API_URL}current.json`, {
+    const response = await axios.get('http://localhost:5000/currentWeather', {
       params: {
-        key: API_KEY,
-        q: city,
+        city,
       },
     });
 
-    return FetchTodayOverviewResult.parse(data);
+    return CurrentWeatherSchema.parse(response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('Network error:', error.message);
@@ -35,10 +35,13 @@ const fetchWeatherData = async (city: string): Promise<WeatherData> => {
   }
 };
 
-export const useTodayOverviewData = (city: string) => {
-  const { data, error, isLoading, isError } = useQuery<WeatherData, Error>({
-    queryKey: ['overviewData', city],
-    queryFn: () => fetchWeatherData(city),
+export const useCurrentWeatherData = (city: string) => {
+  const { data, error, isLoading, isError } = useQuery<
+    CurrentWeatherSchemaType,
+    Error
+  >({
+    queryKey: ['currentWeatherData', city],
+    queryFn: () => fetchCurrentWeatherData(city),
   });
 
   return {

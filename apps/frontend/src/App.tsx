@@ -1,4 +1,5 @@
 import WeatherOverview from './components/Overview/WeatherOverview/WeatherOverview';
+import { useState } from 'react';
 import { useTodayOverviewData } from './hooks/useTodayOverviewData/useTodayOverviewData';
 import ForecastPanel from './components/Forecast/ForecastPanel/ForecastPanel';
 import { createContext } from 'react';
@@ -17,12 +18,12 @@ export const CurrentCityContext = createContext<CityContextInterface>({
 });
 
 function App(): JSX.Element {
-  const { data, error, isError, isLoading, setCurrentCity, currentCity } =
-    useTodayOverviewData('Gliwice');
+  const [currentCity, setCurrentCity] = useState<string>('Gliwice');
+  const { data, error, isError, isLoading } = useTodayOverviewData(currentCity);
 
   if (isLoading) {
     return (
-      <div className='flex h-screen items-center justify-center'>
+      <div className="flex h-screen items-center justify-center">
         <LoadingSpinner />
       </div>
     );
@@ -36,29 +37,14 @@ function App(): JSX.Element {
     return <div>No data available</div>;
   }
 
-  const { name, country, localtime } = data.location;
-  const {
-    temp_c,
-    condition,
-    heatindex_c,
-    uv,
-    humidity,
-    precip_mm,
-    vis_km,
-    wind_kph,
-  } = data.current;
+  const { heatindex_c, uv, humidity, precip_mm, vis_km, wind_kph } =
+    data.current;
 
   return (
     <CurrentCityContext.Provider value={{ currentCity, setCurrentCity }}>
-      <main className='max-w-5xl shadow-xl lg:flex lg:justify-center lg:rounded-3xl lg:align-middle xl:w-[1150px] xl:max-w-6xl'>
-        <WeatherOverview
-          city={name}
-          country={country}
-          localtime={localtime}
-          temperature={temp_c}
-          condition={condition}
-        />
-        <section className='flex flex-col gap-12 bg-gray-200 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4'>
+      <main className="max-w-5xl shadow-xl lg:flex lg:justify-center lg:rounded-3xl lg:align-middle xl:w-[1150px] xl:max-w-6xl">
+        <WeatherOverview />
+        <section className="flex flex-col gap-12 bg-gray-200 p-4 lg:w-9/12 lg:rounded-r-3xl lg:p-8 xl:w-3/4">
           <ForecastPanel />
           {isLoading ? (
             <TodayHighlightSkeleton />

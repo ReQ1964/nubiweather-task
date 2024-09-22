@@ -7,7 +7,7 @@ import { ForecastData } from 'shared-types/apiTypes';
 
 const fetchForecastData = async (
   city: string,
-  days: number
+  days: number,
 ): Promise<ForecastData> => {
   try {
     const { data } = await axios.get(`${API_URL}forecast.json`, {
