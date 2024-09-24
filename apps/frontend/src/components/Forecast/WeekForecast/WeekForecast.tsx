@@ -35,7 +35,6 @@ const WeekForecast = () => {
   return useDataFetching({
     fetchResult,
     loadingComponent: <LoadingComponent />,
-    loadingClassName: 'flex gap-8 overflow-hidden',
     renderData: (data) => {
       const forecastDays = data.forecast.forecastday;
       const dataWithoutCurrentDay =

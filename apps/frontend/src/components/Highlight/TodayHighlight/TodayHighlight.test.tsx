@@ -1,5 +1,9 @@
+import { mockTodayHiglightData } from '@/libs/vitest/mocks/handlers';
+import { mockedQueryClient } from '@/libs/vitest/mocks/tanstackQuery';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
 import TodayHighlight from './TodayHighlight';
 
 // Mock TodayHighlightTile component
@@ -22,31 +26,34 @@ vi.mock('../TodayHighlightTile/TodayHighlightTile', () => ({
 }));
 
 describe('TodayHighlight', () => {
-  it('renders correctly with provided props', () => {
-    const props = {
-      humidity: 80,
-      heatIndex: 35,
-      uv: 7,
-      precipitation: 5,
-      windSpeed: 20,
-      visibility: 10,
-    };
+  it('renders correctly with provided props', async () => {
+    render(
+      <QueryClientProvider client={mockedQueryClient}>
+        <TodayHighlight />
+      </QueryClientProvider>,
+    );
 
-    render(<TodayHighlight {...props} />);
+    const { heatindex_c, uv, wind_kph, vis_km, humidity, precip_mm } =
+      mockTodayHiglightData;
 
-    expect(screen.getByText(/today's highlights/i)).toBeInTheDocument();
+    expect(await screen.findByText(/today's highlights/i)).toBeInTheDocument();
 
     expect(screen.getByText('UV Index')).toBeInTheDocument();
-    expect(screen.getByText('7')).toBeInTheDocument();
+    expect(await screen.findByText(uv)).toBeInTheDocument();
+
     expect(screen.getByText('Wind Speed')).toBeInTheDocument();
-    expect(screen.getByText('20 km/h')).toBeInTheDocument();
+    expect(await screen.findByText(`${wind_kph} km/h`)).toBeInTheDocument();
+
     expect(screen.getByText('Visibility')).toBeInTheDocument();
-    expect(screen.getByText('10 km')).toBeInTheDocument();
+    expect(await screen.findByText(`${vis_km} km`)).toBeInTheDocument();
+
     expect(screen.getByText('Humidity')).toBeInTheDocument();
-    expect(screen.getByText('80%')).toBeInTheDocument();
+    expect(await screen.findByText(`${humidity}%`)).toBeInTheDocument();
+
     expect(screen.getByText('Rain Chance')).toBeInTheDocument();
-    expect(screen.getByText('5 mm')).toBeInTheDocument();
+    expect(await screen.findByText(`${precip_mm} mm`)).toBeInTheDocument();
+
     expect(screen.getByText('Heat Index')).toBeInTheDocument();
-    expect(screen.getByText('35°C')).toBeInTheDocument();
+    expect(await screen.findByText(`${heatindex_c}°C`)).toBeInTheDocument();
   });
 });

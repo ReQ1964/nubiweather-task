@@ -36,7 +36,7 @@ const TodayHighlight = () => {
           <section className="grid grid-cols-2 gap-7 md:grid-cols-3">
             <TodayHighlightTile
               heading="UV Index"
-              text={uv}
+              text={uv.toString()}
               icon={<UVIndexIcon />}
             />
             <TodayHighlightTile

@@ -1,15 +1,9 @@
-import { z } from 'zod';
 import {
-  FetchForecastResult,
-  FetchTodayOverviewResult,
-  TodayHighlightSchema,
   CurrentWeatherSchema,
+  FetchForecastResult,
+  TodayHighlightSchema,
 } from 'shared-schemas/apiSchemas';
-
-export type CityName = z.infer<
-  typeof FetchTodayOverviewResult
->['location']['name'];
-export type WeatherData = z.infer<typeof FetchTodayOverviewResult>;
+import { z } from 'zod';
 
 export type ForecastData = z.infer<typeof FetchForecastResult>;
 
