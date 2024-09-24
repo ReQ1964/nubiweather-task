@@ -32,7 +32,9 @@ const TodayHighlight = () => {
       const { humidity, uv, wind_kph, precip_mm, vis_km, heatindex_c } = data;
       return (
         <main>
-          <h2 className="mb-6 text-lg font-bold">Today&apos;s Highlights</h2>
+          <h2 className="mb-6 text-xl font-bold text-white">
+            Today&apos;s Highlights
+          </h2>
           <section className="grid grid-cols-2 gap-7 md:grid-cols-3">
             <TodayHighlightTile
               heading="UV Index"

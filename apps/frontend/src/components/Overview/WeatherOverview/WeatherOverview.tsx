@@ -28,20 +28,27 @@ const WeatherOverview = (): ReactNode => {
       const formattedDate = dayjs(localtime).format('dddd, D MMMM');
 
       return (
-        <section className="flex flex-col px-4 py-6 lg:w-3/12 lg:rounded-l-3xl lg:p-8">
-          <header className="flex flex-col gap-4">
+        <section
+          className="flex flex-col justify-center gap-10 px-4 py-6 sm:flex-row sm:p-14 md:p-20 lg:w-3/12 lg:flex-col lg:rounded-l-3xl lg:border-l-8 lg:border-sky-900 lg:p-6 lg:shadow-2xl
+         "
+        >
+          <header className="mx-auto flex flex-col gap-4 lg:w-full">
             <nav className="relative flex flex-col gap-4">
               <div>
-                <h2 className="mr-7 text-3xl">
-                  {name}, {country}
+                <h2 className="mb-2 mr-7 text-3xl">
+                  <span className="sm:text-4xl">{name}</span>, {country}
                 </h2>
                 <p>{formattedDate}</p>
               </div>
               <CityAutocompleteInput />
             </nav>
           </header>
-          <main className="flex flex-row justify-center pb-6 pt-10 sm:py-12 lg:flex-col lg:py-0 lg:pt-6 lg:text-center">
-            <img src={icon} alt={condition} className="w-28 lg:self-center" />
+          <main className="mx-auto flex max-w-96 flex-row justify-center p-8 lg:flex-col lg:p-6 lg:text-center">
+            <img
+              src={icon}
+              alt={condition}
+              className="min-w-24 lg:self-center"
+            />
             <div className="flex flex-col justify-center gap-2">
               <h1 className="text-5xl">{temp_c}&#8451;</h1>
               <p>{condition}</p>

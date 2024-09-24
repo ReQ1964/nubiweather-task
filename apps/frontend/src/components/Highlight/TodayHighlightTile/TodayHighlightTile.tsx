@@ -9,7 +9,7 @@ export const TodayHighlightTile = ({
   heading,
   icon,
 }: TodayHighlightTileProps) => (
-  <div className="flex size-40 flex-col justify-self-center rounded-md border border-gray-200 bg-white p-4 pt-3 text-left align-middle shadow-xl sm:h-44 sm:w-52">
+  <div className="flex size-36 flex-col justify-self-center rounded-md border border-gray-200 bg-white p-4 pt-3 text-left align-middle shadow-xl sm:h-44 sm:w-52">
     <div className="flex items-center gap-2">
       {icon}
       <h3 className="text-base text-gray-500 sm:text-lg">{heading}</h3>
