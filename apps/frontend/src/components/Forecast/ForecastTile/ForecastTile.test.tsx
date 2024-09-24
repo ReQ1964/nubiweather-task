@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
 import ForecastTile from './ForecastTile';
 
 describe('ForecastTile', () => {
@@ -13,6 +14,7 @@ describe('ForecastTile', () => {
     temperature,
     weatherIcon,
     weatherText,
+    first: false,
   };
 
   it('should render ForecastTile with correct data', () => {
@@ -21,7 +23,7 @@ describe('ForecastTile', () => {
     expect(screen.getByText(topInfo)).toBeInTheDocument();
 
     expect(
-      screen.getByText(new RegExp(`${temperature}`, 'i'))
+      screen.getByText(new RegExp(`${temperature}`, 'i')),
     ).toBeInTheDocument();
 
     expect(screen.getByRole('img')).toHaveAttribute('src', weatherIcon);
