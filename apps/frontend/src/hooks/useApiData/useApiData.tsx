@@ -13,7 +13,6 @@ const fetchData = async <T,>(
         city,
       },
     });
-
     return schema.parse(response.data);
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -41,7 +40,7 @@ export const useApiData = <T,>(
   schema: ZodSchema<T>,
 ) => {
   const { data, error, isLoading, isError } = useQuery<T, Error>({
-    queryKey: ['currentWeatherData', city],
+    queryKey: [`data_for_${url}`, city],
     queryFn: () => fetchData<T>(city, url, schema),
   });
 
