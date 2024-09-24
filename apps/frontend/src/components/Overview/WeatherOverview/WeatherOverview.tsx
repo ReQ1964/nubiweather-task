@@ -1,16 +1,21 @@
 import dayjs from 'dayjs';
 import cityImg from '@/assets/img/city-bg.jpg';
 import CityAutocompleteInput from '../CityAutocompleteInput/CityAutocompleteInput';
-import { useCurrentWeatherData } from '@/hooks/useCurrentWeatherData/useCurrentWeatherData';
 import { useContext } from 'react';
 import { CurrentCityContext } from '@/App';
 import LoadingSpinner from '@/assets/icons/LoadingSpinner';
+import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';
 import { CurrentWeatherSchemaType } from 'shared-types/apiTypes';
+import { useApiData } from '@/hooks/useApiData/useApiData';
 
 const WeatherOverview = (): JSX.Element => {
   const { currentCity } = useContext(CurrentCityContext);
   const { data, error, isLoading, isError } =
-    useCurrentWeatherData(currentCity);
+    useApiData<CurrentWeatherSchemaType>(
+      currentCity,
+      'http://localhost:5000/currentWeather',
+      CurrentWeatherSchema,
+    );
 
   if (isLoading) {
     return (
