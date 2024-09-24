@@ -38,9 +38,10 @@ export const useApiData = <T,>(
   city: string,
   url: string,
   schema: ZodSchema<T>,
+  id: string,
 ) => {
   const { data, error, isLoading, isError } = useQuery<T, Error>({
-    queryKey: [`data_for_${url}`, city],
+    queryKey: [city, id],
     queryFn: () => fetchData<T>(city, url, schema),
   });
 

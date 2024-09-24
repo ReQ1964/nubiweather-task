@@ -1,12 +1,13 @@
-import dayjs from 'dayjs';
-import cityImg from '@/assets/img/city-bg.jpg';
-import CityAutocompleteInput from '../CityAutocompleteInput/CityAutocompleteInput';
-import { ReactNode, useContext } from 'react';
 import { CurrentCityContext } from '@/App';
-import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';
-import { CurrentWeatherSchemaType } from 'shared-types/apiTypes';
+import cityImg from '@/assets/img/city-bg.jpg';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+import dayjs from 'dayjs';
+import { ReactNode, useContext } from 'react';
+import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';
+import { CurrentWeatherSchemaType } from 'shared-types/apiTypes';
+
+import CityAutocompleteInput from '../CityAutocompleteInput/CityAutocompleteInput';
 
 const WeatherOverview = (): ReactNode => {
   const { currentCity } = useContext(CurrentCityContext);
@@ -14,6 +15,7 @@ const WeatherOverview = (): ReactNode => {
     currentCity,
     'http://localhost:5000/currentWeather',
     CurrentWeatherSchema,
+    'overview',
   );
 
   return useDataFetching({

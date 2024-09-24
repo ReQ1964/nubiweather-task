@@ -1,17 +1,18 @@
-import { useContext } from 'react';
-import UVIndexIcon from '@/assets/icons/weatherStatus/UVIndexIcon';
-import HumidityIcon from '@/assets/icons/weatherStatus/HumidityIcon';
+import { CurrentCityContext } from '@/App';
 import HeatIndexIcon from '@/assets/icons/weatherStatus/HeatIndexIcon';
+import HumidityIcon from '@/assets/icons/weatherStatus/HumidityIcon';
+import RainPrecipitationIcon from '@/assets/icons/weatherStatus/RainPrecipitationIcon';
+import UVIndexIcon from '@/assets/icons/weatherStatus/UVIndexIcon';
 import VisibilityIcon from '@/assets/icons/weatherStatus/VisibilityIcon';
 import WindIcon from '@/assets/icons/weatherStatus/WindIcon';
-import RainPrecipitationIcon from '@/assets/icons/weatherStatus/RainPrecipitationIcon';
-import { TodayHighlightTile } from '../TodayHighlightTile/TodayHighlightTile';
 import { useApiData } from '@/hooks/useApiData/useApiData';
-import { CurrentCityContext } from '@/App';
+import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+import { useContext } from 'react';
 import { TodayHighlightSchema } from 'shared-schemas/apiSchemas';
 import { TodayHighlightSchemaType } from 'shared-types/apiTypes';
+
+import { TodayHighlightTile } from '../TodayHighlightTile/TodayHighlightTile';
 import { TodayHighlightSkeleton } from '../TodayHighlightTile/TodayHighlightTileSkeleton';
-import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
 
 const TodayHighlight = () => {
   const { currentCity } = useContext(CurrentCityContext);
@@ -20,6 +21,7 @@ const TodayHighlight = () => {
     currentCity,
     'http://localhost:5000/todayHighlight',
     TodayHighlightSchema,
+    'highlight',
   );
 
   return useDataFetching({

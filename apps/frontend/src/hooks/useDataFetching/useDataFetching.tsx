@@ -1,5 +1,5 @@
-import ErrorMessage from '@/components/UI/ErrorMessage/ErrorMessage';
 import LoadingSpinner from '@/assets/icons/LoadingSpinner';
+import ErrorMessage from '@/components/UI/ErrorMessage/ErrorMessage';
 
 type FetchResult<T> = {
   data: T | undefined;
@@ -10,7 +10,7 @@ type FetchResult<T> = {
 
 type RenderFunction<T> = (data: T) => React.ReactNode;
 
-export function useDataFetching<T>({
+export const useDataFetching = <T,>({
   fetchResult,
   renderData,
   loadingComponent = <LoadingSpinner />,
@@ -22,7 +22,7 @@ export function useDataFetching<T>({
   loadingComponent?: React.ReactNode;
   errorClassName?: string;
   loadingClassName?: string;
-}) {
+}) => {
   const { data, error, isLoading, isError } = fetchResult;
 
   if (isLoading) {
@@ -44,4 +44,4 @@ export function useDataFetching<T>({
   }
 
   return renderData(data);
-}
+};

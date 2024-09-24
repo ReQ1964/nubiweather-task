@@ -1,19 +1,19 @@
-import { useContext } from 'react';
 import dayjs from 'dayjs';
+import { useContext } from 'react';
+
 import 'swiper/css';
-import { API_URL, API_KEY } from '@/constants/api';
 
 import { CurrentCityContext } from '@/App';
+import { API_KEY, API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
-
+import { FetchForecastResult } from 'shared-schemas/apiSchemas';
+import { ForecastData } from 'shared-types/apiTypes';
 import { SwiperSlide } from 'swiper/react';
+
 import SwiperWrapper from '../../UI/SwiperWrapper/SwiperWrapper';
 import ForecastTile from '../ForecastTile/ForecastTile';
 import ForecastTileSkeleton from '../ForecastTile/ForecastTileSkeleton';
-
-import { FetchForecastResult } from 'shared-schemas/apiSchemas';
-import { ForecastData } from 'shared-types/apiTypes';
 
 type ForecastHour = {
   condition: {
@@ -44,6 +44,7 @@ const DayForecast = () => {
     currentCity,
     `${API_URL}forecast.json?=days=2&key=${API_KEY}&q=${currentCity}`,
     FetchForecastResult,
+    'day',
   );
 
   const LoadingComponent = () => (
