@@ -1,14 +1,19 @@
 import { useContext } from 'react';
 import dayjs from 'dayjs';
-import { SwiperSlide } from 'swiper/react';
-import SwiperWrapper from '../../UI/SwiperWrapper';
-
-import { useForecastData } from '@/hooks/useForecastData/useForecastData';
-import ForecastTile from '../ForecastTile/ForecastTile';
-import { CurrentCityContext } from '@/App';
-
 import 'swiper/css';
+import { API_URL, API_KEY } from '@/constants/api';
+
+import { CurrentCityContext } from '@/App';
+import { useApiData } from '@/hooks/useApiData/useApiData';
+import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+
+import { SwiperSlide } from 'swiper/react';
+import SwiperWrapper from '../../UI/SwiperWrapper/SwiperWrapper';
+import ForecastTile from '../ForecastTile/ForecastTile';
 import ForecastTileSkeleton from '../ForecastTile/ForecastTileSkeleton';
+
+import { FetchForecastResult } from 'shared-schemas/apiSchemas';
+import { ForecastData } from 'shared-types/apiTypes';
 
 type ForecastHour = {
   condition: {
@@ -22,7 +27,7 @@ type ForecastHour = {
 const filterHours = (
   hours: ForecastHour[],
   isToday: boolean,
-  currentHour: string
+  currentHour: string,
 ) => {
   const filteredHours = hours.filter(({ time }) => {
     const hour = dayjs(time).format('HH:00');
@@ -34,51 +39,58 @@ const filterHours = (
 
 const DayForecast = () => {
   const { currentCity } = useContext(CurrentCityContext);
-  const { data, error, isError, isLoading } = useForecastData(currentCity, 2);
 
-  if (isLoading) {
-    return (
-      <div className='flex gap-8 overflow-hidden'>
-        {Array(3)
-          .fill(null)
-          .map((_, i) => (
-            <ForecastTileSkeleton key={i} />
-          ))}
-      </div>
-    );
-  }
-
-  if (isError)
-    return <div>{error?.message || 'An unexpected error occurred'}</div>;
-
-  if (!data) return <div>No data available</div>;
-
-  const { forecastday: forecastDays } = data.forecast;
-  const currentHour = dayjs().format('HH:00');
-
-  const filteredForecasts = forecastDays.map((day, index) =>
-    filterHours(day.hour, index === 0, currentHour)
+  const fetchResult = useApiData<ForecastData>(
+    currentCity,
+    `${API_URL}forecast.json?=days=2&key=${API_KEY}&q=${currentCity}`,
+    FetchForecastResult,
   );
 
-  return (
-    <SwiperWrapper>
-      {filteredForecasts.map((hours) =>
-        hours.map(({ time, temp_c, condition }, hourIndex) => {
-          const hour = dayjs(time).format('HH:00');
-          return (
-            <SwiperSlide key={`${time}-${hourIndex}`} data-testid='data-out'>
-              <ForecastTile
-                topInfo={hour}
-                temperature={temp_c}
-                weatherIcon={condition.icon}
-                weatherText={condition.text}
-              />
-            </SwiperSlide>
-          );
-        })
-      )}
-    </SwiperWrapper>
+  const LoadingComponent = () => (
+    <div className="flex gap-8 overflow-hidden">
+      {Array(3)
+        .fill(null)
+        .map((_, i) => (
+          <ForecastTileSkeleton key={i} />
+        ))}
+    </div>
   );
+
+  return useDataFetching({
+    fetchResult,
+    loadingComponent: <LoadingComponent />,
+    renderData: (data) => {
+      const { forecastday: forecastDays } = data.forecast;
+      const currentHour = dayjs().format('HH:00');
+
+      const filteredForecasts = forecastDays.map((day, index) =>
+        filterHours(day.hour, index === 0, currentHour),
+      );
+
+      return (
+        <SwiperWrapper>
+          {filteredForecasts.map((hours) =>
+            hours.map(({ time, temp_c, condition }, hourIndex) => {
+              const hour = dayjs(time).format('HH:00');
+              return (
+                <SwiperSlide
+                  key={`${time}-${hourIndex}`}
+                  data-testid="data-out"
+                >
+                  <ForecastTile
+                    topInfo={hour}
+                    temperature={temp_c}
+                    weatherIcon={condition.icon}
+                    weatherText={condition.text}
+                  />
+                </SwiperSlide>
+              );
+            }),
+          )}
+        </SwiperWrapper>
+      );
+    },
+  });
 };
 
 export default DayForecast;
