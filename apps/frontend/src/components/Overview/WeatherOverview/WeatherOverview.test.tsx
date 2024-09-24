@@ -1,33 +1,35 @@
+import { mockCurrentWeatherData } from '@/libs/vitest/mocks/handlers';
+import { mockedQueryClient } from '@/libs/vitest/mocks/tanstackQuery';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
 import { describe, expect, it } from 'vitest';
+
 import WeatherOverview from './WeatherOverview';
 
 describe('WeatherOverview', () => {
-  it('should render with proper props', () => {
-    const props = {
-      city: 'Gliwice',
-      country: 'Poland',
-      localtime: '2024-09-14 10:00',
-      temperature: 30,
-      condition: {
-        text: 'Cloudy',
-        icon: 'icon',
-      },
-    };
-    render(<WeatherOverview {...props} />);
+  it('should render with mocked data', async () => {
+    render(
+      <QueryClientProvider client={mockedQueryClient}>
+        <WeatherOverview />
+      </QueryClientProvider>,
+    );
 
-    expect(screen.getByText(new RegExp(props.city, 'i'))).toBeInTheDocument();
+    const { name, country, localtime, temp_c, condition, icon } =
+      mockCurrentWeatherData;
 
-    expect(
-      screen.getByText(new RegExp(props.country, 'i'))
-    ).toBeInTheDocument();
+    const formattedDate = dayjs(localtime).format('dddd, D MMMM');
 
-    expect(screen.getByText(/saturday, 14 september/i)).toBeInTheDocument();
+    expect(await screen.findByText(name)).toBeInTheDocument();
+    expect(await screen.findByText(`, ${country}`)).toBeInTheDocument();
+    expect(await screen.findByText(formattedDate)).toBeInTheDocument();
+    expect(await screen.findByText(condition)).toBeInTheDocument();
 
-    expect(
-      screen.getByText(new RegExp(props.temperature.toString(), 'i'))
-    ).toBeInTheDocument();
+    const tempTextMatcher = (content: string) =>
+      content.includes(`${temp_c}`) && content.includes('℃');
+    expect(await screen.findByText(tempTextMatcher)).toBeInTheDocument();
 
-    expect(screen.getByAltText(props.condition.text)).toBeInTheDocument();
+    const iconElement = await screen.findByAltText(condition);
+    expect(iconElement).toHaveAttribute('src', icon);
   });
 });

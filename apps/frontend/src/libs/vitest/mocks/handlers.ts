@@ -1,6 +1,11 @@
-import { http, HttpResponse } from 'msw';
 import { API_URL } from '@/constants/api';
-import { ForecastData, WeatherData } from 'shared-types/apiTypes';
+import dayjs from 'dayjs';
+import { http, HttpResponse } from 'msw';
+import {
+  CurrentWeatherSchemaType,
+  ForecastData,
+  TodayHighlightSchemaType,
+} from 'shared-types/apiTypes';
 
 export const mockForecastData: ForecastData = {
   forecast: {
@@ -65,32 +70,34 @@ export const mockForecastData: ForecastData = {
   },
 };
 
-export const mockOverviewData: WeatherData = {
-  location: {
-    name: 'Gliwice',
-    country: 'Poland',
-    localtime: '2024-09-14 10:00',
-  },
-  current: {
-    temp_c: 22.5,
-    condition: {
-      text: 'Partly Cloudy',
-      icon: 'icon',
-    },
-    humidity: 60,
-    uv: 5.5,
-    vis_km: 10,
-    wind_kph: 15,
-    precip_mm: 0.5,
-    heatindex_c: 23.1,
-  },
+export const mockCurrentWeatherData: CurrentWeatherSchemaType = {
+  name: 'Gliwice',
+  country: 'Poland',
+  localtime: dayjs().toISOString(),
+  temp_c: 22.5,
+  condition: 'Partly Cloudy',
+  icon: 'icon',
+};
+
+export const mockTodayHiglightData: TodayHighlightSchemaType = {
+  localtime: dayjs().toISOString(),
+  humidity: 60,
+  uv: 5.5,
+  vis_km: 10,
+  wind_kph: 15,
+  precip_mm: 0.5,
+  heatindex_c: 23.1,
 };
 
 export const handlers = [
   http.get(`${API_URL}forecast.json`, () => {
     return HttpResponse.json(mockForecastData);
   }),
-  http.get(`${API_URL}current.json`, () => {
-    return HttpResponse.json(mockOverviewData);
+
+  http.get(`http://localhost:5000/currentWeather`, () => {
+    return HttpResponse.json(mockCurrentWeatherData);
+  }),
+  http.get(`http://localhost:5000/todayHighlight`, () => {
+    return HttpResponse.json(mockTodayHiglightData);
   }),
 ];

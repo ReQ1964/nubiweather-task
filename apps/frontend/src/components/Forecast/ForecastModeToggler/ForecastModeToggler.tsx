@@ -15,14 +15,14 @@ const ForecastModeToggler = ({
   ];
 
   return (
-    <div className='mb-6 flex flex-row gap-3'>
+    <div className="mb-6 flex flex-row gap-3">
       {buttons.map(({ mode, label }) => (
         <button
           key={mode}
-          className={`relative text-lg font-bold ${
+          className={`relative text-xl font-bold text-white duration-75 hover:scale-105 ${
             forecastMode === mode
-              ? "text-black after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-black after:content-['']"
-              : 'text-gray-500'
+              ? "after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-white after:content-[''] hover:after:h-[3px] "
+              : 'opacity-65'
           }`}
           onClick={() => setForecastMode(mode as ForecastMode)}
           aria-pressed={forecastMode === mode}

@@ -21,13 +21,11 @@ const CityAutocompleteSuggestion = ({
   return (
     <li>
       <button
-        type='button'
+        type="button"
         onClick={() => handleClick(suggestion as CityUnion)}
         disabled={isError(suggestion)}
-        className={`w-full p-3 text-left duration-75  ${
-          isError(suggestion)
-            ? 'cursor-not-allowed text-red-800'
-            : 'hover:scale-105'
+        className={`w-full p-3 text-left duration-75 hover:border-l-4 hover:border-sky-900 hover:bg-sky-100 focus:border-l-4 focus:border-sky-900 focus:bg-sky-100 ${
+          isError(suggestion) ? 'cursor-not-allowed text-red-800' : ''
         }`}
       >
         {suggestion}

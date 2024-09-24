@@ -1,10 +1,11 @@
-import { useState, useContext, useEffect } from 'react';
 import { CurrentCityContext } from '@/App';
-import CityAutocompleteSuggestion from './CityAutocompleteSuggestion/CityAutocompleteSuggestion';
 import {
   SUGGESTIONS_MATCH_ERROR,
   SUGGESTIONS_VALIDITY_ERROR,
 } from '@/constants/general';
+import { useContext, useEffect, useState } from 'react';
+
+import CityAutocompleteSuggestion from './CityAutocompleteSuggestion/CityAutocompleteSuggestion';
 
 type CityUnion = 'Gliwice' | 'Hamburg' | 'Katowice' | 'Warsaw';
 
@@ -12,7 +13,7 @@ const cities: CityUnion[] = ['Gliwice', 'Hamburg', 'Katowice', 'Warsaw'];
 
 const filterSuggestions = (input: string, cities: CityUnion[]) => {
   return cities.filter((city) =>
-    city.toLowerCase().includes(input.toLowerCase())
+    city.toLowerCase().includes(input.toLowerCase()),
   );
 };
 
@@ -55,7 +56,7 @@ const CityAutocompleteInput = () => {
       setSuggestions(
         filteredSuggestions.length > 0
           ? filteredSuggestions
-          : [SUGGESTIONS_MATCH_ERROR]
+          : [SUGGESTIONS_MATCH_ERROR],
       );
     }, 300);
 
@@ -70,7 +71,7 @@ const CityAutocompleteInput = () => {
     if (e.key !== 'Enter') return;
 
     const validCity = cities.find(
-      (value) => value === (inputValue as CityUnion)
+      (value) => value === (inputValue as CityUnion),
     );
     if (!validCity) {
       setSuggestions([SUGGESTIONS_VALIDITY_ERROR]);
@@ -87,22 +88,25 @@ const CityAutocompleteInput = () => {
   };
 
   return (
-    <div className='relative'>
-      <div className='flex flex-col gap-1'>
-        <label htmlFor='city'>Choose a city</label>
+    <div className="relative">
+      <div className="flex flex-col gap-1">
+        <label htmlFor="city" className="text-lg font-bold">
+          Choose a city
+        </label>
         <input
-          type='text'
-          id='city'
+          type="text"
+          id="city"
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleInputSubmit}
-          aria-autocomplete='list'
-          aria-controls='autocomplete-list'
-          className='max-w-xs border-2 border-black'
+          placeholder="e.g. Hamburg"
+          aria-autocomplete="list"
+          aria-controls="autocomplete-list"
+          className="max-w-xs rounded-xl border-2 border-gray-500 p-2 shadow-lg"
         />
       </div>
       {suggestions.length > 0 && (
-        <ul className='absolute mt-2 w-full max-w-xs rounded-b-lg bg-white shadow-lg'>
+        <ul className="absolute mt-2 w-full max-w-xs rounded-b-lg bg-white shadow-lg">
           {suggestions.slice(0, 4).map((suggestion) => (
             <CityAutocompleteSuggestion
               key={suggestion}

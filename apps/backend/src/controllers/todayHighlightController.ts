@@ -1,14 +1,15 @@
-import { Request, Response } from 'express';
-import axios from 'axios';
 import { prisma } from '@/prismaClient';
-import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
 import {
-  UnFlattenedTodayHighlightSchemaType,
   UnFlattenedTodayHighlightSchema,
+  UnFlattenedTodayHighlightSchemaType,
 } from '@/schema/weatherApi';
+import axios from 'axios';
+import { Request, Response } from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import { TodayHighlightSchema } from 'shared-schemas/apiSchemas';
 import { TodayHighlightSchemaType } from 'shared-types/apiTypes';
-import expressAsyncHandler from 'express-async-handler';
+
+import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
 
 export const getTodayHighlight = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -41,7 +42,7 @@ export const getTodayHighlight = expressAsyncHandler(
 
     const validatedData = TodayHighlightSchema.parse(flattenedData);
 
-    if (highlightData) {
+    if (!highlightData) {
       await prisma.highlightData.create({
         data: validatedData,
       });
