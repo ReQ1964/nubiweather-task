@@ -15,7 +15,7 @@ export const useDataFetching = <T,>({
   renderData,
   loadingComponent = <LoadingSpinner />,
   errorClassName = 'h-full min-h-[120px]',
-  loadingClassName = 'flex items-center justify-center',
+  loadingClassName = '',
 }: {
   fetchResult: FetchResult<T>;
   renderData: RenderFunction<T>;

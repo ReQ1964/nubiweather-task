@@ -1,18 +1,20 @@
-import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { server } from '@/libs/vitest/mocks/server';
-import { http, HttpResponse } from 'msw';
 import { API_URL } from '@/constants/api';
-import DayForecast from './DayForecast';
+import { server } from '@/libs/vitest/mocks/server';
 import { mockedQueryClient } from '@/libs/vitest/mocks/tanstackQuery';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { render, screen } from '@testing-library/react';
+import dayjs from 'dayjs';
+import { http, HttpResponse } from 'msw';
+import { describe, expect, it } from 'vitest';
+
+import DayForecast from './DayForecast';
 
 describe('DayForecast', () => {
   it('should display correct mocked data', async () => {
     render(
       <QueryClientProvider client={mockedQueryClient}>
         <DayForecast />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     const dataAssertions = [
@@ -23,7 +25,7 @@ describe('DayForecast', () => {
     ];
 
     for (const { time, temp, altText, iconSrc } of dataAssertions) {
-      await screen.findByText(time);
+      await screen.findByText(dayjs(time).format('hh:mm A'));
       await screen.findByText(temp);
       const img = screen.getByAltText(altText);
       expect(img).toHaveAttribute('src', iconSrc);
@@ -36,13 +38,13 @@ describe('DayForecast', () => {
         return HttpResponse.json({
           forecast: {},
         });
-      })
+      }),
     );
 
     render(
       <QueryClientProvider client={mockedQueryClient}>
         <DayForecast />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     await screen.findByText(/zod validation error/i);
@@ -52,13 +54,13 @@ describe('DayForecast', () => {
     server.use(
       http.get(`${API_URL}forecast.json`, () => {
         return HttpResponse.json(null, { status: 400 });
-      })
+      }),
     );
 
     render(
       <QueryClientProvider client={mockedQueryClient}>
         <DayForecast />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     await screen.findByText(/Network error/i);

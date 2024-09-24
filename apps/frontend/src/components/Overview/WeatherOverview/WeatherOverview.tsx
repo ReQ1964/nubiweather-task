@@ -29,7 +29,7 @@ const WeatherOverview = (): ReactNode => {
 
       return (
         <section
-          className="flex flex-col justify-center gap-10 px-4 py-6 sm:flex-row sm:p-14 md:p-20 lg:w-3/12 lg:flex-col lg:rounded-l-3xl lg:border-l-8 lg:border-sky-900 lg:p-6 lg:shadow-2xl
+          className="flex flex-col justify-center gap-10 px-4 py-6 sm:flex-row sm:p-14 md:p-20 lg:w-3/12 lg:flex-col lg:rounded-l-3xl lg:border-l-8 lg:border-cyan-950 lg:p-6 lg:shadow-2xl
          "
         >
           <header className="mx-auto flex flex-col gap-4 lg:w-full">

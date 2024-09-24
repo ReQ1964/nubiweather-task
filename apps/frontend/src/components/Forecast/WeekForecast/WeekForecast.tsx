@@ -23,8 +23,8 @@ const WeekForecast = () => {
   );
 
   const LoadingComponent = () => (
-    <div className="flex gap-8 overflow-hidden">
-      {Array(3)
+    <div className="flex justify-start gap-8 overflow-hidden">
+      {Array(4)
         .fill(null)
         .map((_, i) => (
           <ForecastTileSkeleton key={i} />
@@ -35,13 +35,14 @@ const WeekForecast = () => {
   return useDataFetching({
     fetchResult,
     loadingComponent: <LoadingComponent />,
+    errorClassName: 'mb-6 h-full min-h-[120px]',
     renderData: (data) => {
       const forecastDays = data.forecast.forecastday;
       const dataWithoutCurrentDay =
         forecastDays.length > 1 ? forecastDays.slice(1) : [];
       return (
         <SwiperWrapper>
-          {dataWithoutCurrentDay.map((item) => {
+          {dataWithoutCurrentDay.map((item, index) => {
             const weekday = dayjs(item.date).format('ddd');
 
             return (
@@ -51,6 +52,7 @@ const WeekForecast = () => {
                   temperature={item.day.avgtemp_c}
                   weatherIcon={item.day.condition.icon}
                   weatherText={item.day.condition.text}
+                  first={index === 0}
                 />
               </SwiperSlide>
             );

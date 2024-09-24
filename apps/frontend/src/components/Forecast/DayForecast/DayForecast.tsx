@@ -42,14 +42,14 @@ const DayForecast = () => {
 
   const fetchResult = useApiData<ForecastData>(
     currentCity,
-    `${API_URL}forecast.json?=days=2&key=${API_KEY}&q=${currentCity}`,
+    `${API_URL}forecast.json?days=2&key=${API_KEY}&q=${currentCity}`,
     FetchForecastResult,
     'day',
   );
 
   const LoadingComponent = () => (
     <div className="flex gap-8 overflow-hidden">
-      {Array(3)
+      {Array(5)
         .fill(null)
         .map((_, i) => (
           <ForecastTileSkeleton key={i} />
@@ -60,6 +60,7 @@ const DayForecast = () => {
   return useDataFetching({
     fetchResult,
     loadingComponent: <LoadingComponent />,
+    errorClassName: 'mb-6 h-full min-h-[120px]',
     renderData: (data) => {
       const { forecastday: forecastDays } = data.forecast;
       const currentHour = dayjs().format('HH:00');
@@ -70,24 +71,23 @@ const DayForecast = () => {
 
       return (
         <SwiperWrapper>
-          {filteredForecasts.map((hours) =>
-            hours.map(({ time, temp_c, condition }, hourIndex) => {
-              const hour = dayjs(time).format('HH:00');
+          {filteredForecasts
+            .flat()
+            .map(({ time, temp_c, condition }, index) => {
+              const hour = dayjs(time).format('hh:mm A');
+
               return (
-                <SwiperSlide
-                  key={`${time}-${hourIndex}`}
-                  data-testid="data-out"
-                >
+                <SwiperSlide key={`${time}-${index}`} data-testid="data-out">
                   <ForecastTile
                     topInfo={hour}
                     temperature={temp_c}
                     weatherIcon={condition.icon}
                     weatherText={condition.text}
+                    first={index === 0}
                   />
                 </SwiperSlide>
               );
-            }),
-          )}
+            })}
         </SwiperWrapper>
       );
     },
