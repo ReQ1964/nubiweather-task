@@ -1,4 +1,5 @@
 import { API_URL } from '@/constants/api';
+import dayjs from 'dayjs';
 import { http, HttpResponse } from 'msw';
 import {
   CurrentWeatherSchemaType,
@@ -72,14 +73,14 @@ export const mockForecastData: ForecastData = {
 export const mockCurrentWeatherData: CurrentWeatherSchemaType = {
   name: 'Gliwice',
   country: 'Poland',
-  localtime: '2024-09-14 10:00',
+  localtime: dayjs().toString(),
   temp_c: 22.5,
   condition: 'Partly Cloudy',
   icon: 'icon',
 };
 
 export const mockTodayHiglightData: TodayHighlightSchemaType = {
-  localtime: '2024-09-14 10:00',
+  localtime: dayjs().toString(),
   humidity: 60,
   uv: 5.5,
   vis_km: 10,
@@ -93,7 +94,7 @@ export const handlers = [
     return HttpResponse.json(mockForecastData);
   }),
 
-  http.get(`http://localhost:5000/currentWeather.json`, () => {
+  http.get(`http://localhost:5000/currentWeather`, () => {
     return HttpResponse.json(mockCurrentWeatherData);
   }),
   http.get(`http://localhost:5000/todayHighlight`, () => {

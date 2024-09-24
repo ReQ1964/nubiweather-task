@@ -26,7 +26,7 @@ vi.mock('../TodayHighlightTile/TodayHighlightTile', () => ({
 }));
 
 describe('TodayHighlight', () => {
-  it('renders correctly with provided props', async () => {
+  it('renders correctly with mocked data', async () => {
     render(
       <QueryClientProvider client={mockedQueryClient}>
         <TodayHighlight />
