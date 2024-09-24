@@ -73,14 +73,14 @@ export const mockForecastData: ForecastData = {
 export const mockCurrentWeatherData: CurrentWeatherSchemaType = {
   name: 'Gliwice',
   country: 'Poland',
-  localtime: dayjs().toString(),
+  localtime: dayjs().toISOString(),
   temp_c: 22.5,
   condition: 'Partly Cloudy',
   icon: 'icon',
 };
 
 export const mockTodayHiglightData: TodayHighlightSchemaType = {
-  localtime: dayjs().toString(),
+  localtime: dayjs().toISOString(),
   humidity: 60,
   uv: 5.5,
   vis_km: 10,
