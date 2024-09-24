@@ -42,7 +42,7 @@ export const getTodayHighlight = async (
 
   const validatedData = TodayHighlightSchema.parse(flattenedData);
 
-  if (highlightData) {
+  if (!highlightData) {
     await prisma.highlightData.create({
       data: validatedData,
     });
