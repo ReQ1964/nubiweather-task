@@ -1,4 +1,4 @@
-import ErrorMessage from '@/components/UI/ErrorMessage';
+import ErrorMessage from '@/components/UI/ErrorMessage/ErrorMessage';
 import LoadingSpinner from '@/assets/icons/LoadingSpinner';
 
 type FetchResult<T> = {
