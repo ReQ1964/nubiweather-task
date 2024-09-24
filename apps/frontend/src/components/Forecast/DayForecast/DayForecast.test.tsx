@@ -18,10 +18,30 @@ describe('DayForecast', () => {
     );
 
     const dataAssertions = [
-      { time: '14:00', temp: /20/i, altText: 'Clear1', iconSrc: 'icon1' },
-      { time: '15:00', temp: /30/i, altText: 'Clear2', iconSrc: 'icon2' },
-      { time: '00:00', temp: /25/i, altText: 'Clear3', iconSrc: 'icon3' },
-      { time: '01:00', temp: /35/i, altText: 'Clear4', iconSrc: 'icon4' },
+      {
+        time: '2024-09-24 14:00',
+        temp: /20/i,
+        altText: 'Clear1',
+        iconSrc: 'icon1',
+      },
+      {
+        time: '2024-09-24 15:00',
+        temp: /30/i,
+        altText: 'Clear2',
+        iconSrc: 'icon2',
+      },
+      {
+        time: '2024-09-24 00:00',
+        temp: /25/i,
+        altText: 'Clear3',
+        iconSrc: 'icon3',
+      },
+      {
+        time: '2024-09-24 01:00',
+        temp: /35/i,
+        altText: 'Clear4',
+        iconSrc: 'icon4',
+      },
     ];
 
     for (const { time, temp, altText, iconSrc } of dataAssertions) {

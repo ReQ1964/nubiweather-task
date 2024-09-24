@@ -20,7 +20,8 @@ describe('WeatherOverview', () => {
 
     const formattedDate = dayjs(localtime).format('dddd, D MMMM');
 
-    expect(await screen.findByText(`${name}, ${country}`)).toBeInTheDocument();
+    expect(await screen.findByText(name)).toBeInTheDocument();
+    expect(await screen.findByText(`, ${country}`)).toBeInTheDocument();
     expect(await screen.findByText(formattedDate)).toBeInTheDocument();
     expect(await screen.findByText(condition)).toBeInTheDocument();
 

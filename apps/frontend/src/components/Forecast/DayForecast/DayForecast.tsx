@@ -74,6 +74,7 @@ const DayForecast = () => {
           {filteredForecasts
             .flat()
             .map(({ time, temp_c, condition }, index) => {
+              console.log(time);
               const hour = dayjs(time).format('hh:mm A');
 
               return (

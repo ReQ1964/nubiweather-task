@@ -16,7 +16,7 @@ const ForecastTile = ({
   return (
     <div
       className={`flex w-32 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 text-center font-semibold shadow-md ${
-        first ? 'border-t-8 border-blue-200 pt-2 shadow-2xl' : ''
+        first ? 'border-t-8 border-cyan-700 pt-2 shadow-2xl' : ''
       }`}
     >
       <p className="text-sm">{topInfo}</p>

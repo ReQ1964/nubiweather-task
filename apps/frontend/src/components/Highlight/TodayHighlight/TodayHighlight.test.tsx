@@ -38,22 +38,22 @@ describe('TodayHighlight', () => {
 
     expect(await screen.findByText(/today's highlights/i)).toBeInTheDocument();
 
-    expect(screen.getByText('UV Index')).toBeInTheDocument();
+    expect(await screen.findByText('UV Index')).toBeInTheDocument();
     expect(await screen.findByText(uv)).toBeInTheDocument();
 
-    expect(screen.getByText('Wind Speed')).toBeInTheDocument();
+    expect(await screen.findByText('Wind Speed')).toBeInTheDocument();
     expect(await screen.findByText(`${wind_kph} km/h`)).toBeInTheDocument();
 
-    expect(screen.getByText('Visibility')).toBeInTheDocument();
+    expect(await screen.findByText('Visibility')).toBeInTheDocument();
     expect(await screen.findByText(`${vis_km} km`)).toBeInTheDocument();
 
-    expect(screen.getByText('Humidity')).toBeInTheDocument();
+    expect(await screen.findByText('Humidity')).toBeInTheDocument();
     expect(await screen.findByText(`${humidity}%`)).toBeInTheDocument();
 
-    expect(screen.getByText('Rain Chance')).toBeInTheDocument();
+    expect(await screen.findByText('Rain Chance')).toBeInTheDocument();
     expect(await screen.findByText(`${precip_mm} mm`)).toBeInTheDocument();
 
-    expect(screen.getByText('Heat Index')).toBeInTheDocument();
+    expect(await screen.findByText('Heat Index')).toBeInTheDocument();
     expect(await screen.findByText(`${heatindex_c}°C`)).toBeInTheDocument();
   });
 });
