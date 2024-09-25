@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+const conditionSchema = z.object({
+  text: z.string(),
+  icon: z.string(),
+});
+
 export const UnFlattenedTodayHighlightSchema = z.object({
   location: z.object({
     name: z.string(),
@@ -17,11 +22,6 @@ export const UnFlattenedTodayHighlightSchema = z.object({
 export type UnFlattenedTodayHighlightSchemaType = z.infer<
   typeof UnFlattenedTodayHighlightSchema
 >;
-
-const conditionSchema = z.object({
-  text: z.string(),
-  icon: z.string(),
-});
 
 export const UnFlattenedCurrentWeatherSchema = z.object({
   location: z.object({
@@ -42,6 +42,7 @@ export type UnFlattenedCurrentWeatherSchemaType = z.infer<
 export const UnFlattenedForecastSchema = z.object({
   location: z.object({
     name: z.string(),
+    localtime: z.string(),
   }),
   forecast: z.object({
     forecastday: z.array(
@@ -66,26 +67,3 @@ export const UnFlattenedForecastSchema = z.object({
 export type UnFlattenedForecastSchemaType = z.infer<
   typeof UnFlattenedForecastSchema
 >;
-
-export const ForecastSchema = z.object({
-  name: z.string(),
-  timestamp: z.string(),
-  dayForecasts: z.array(
-    z.object({
-      date: z.string(),
-      avgtemp_c: z.number(),
-      condition: z.string(),
-      icon: z.string(),
-      hourForecasts: z.array(
-        z.object({
-          hour: z.string(),
-          temp_c: z.number(),
-          condition: z.string(),
-          icon: z.string(),
-        }),
-      ),
-    }),
-  ),
-});
-
-export type ForecastSchemaType = z.infer<typeof ForecastSchema>;

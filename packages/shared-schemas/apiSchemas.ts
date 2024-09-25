@@ -1,35 +1,5 @@
 import { z } from 'zod';
 
-const conditionSchema = z.object({
-  text: z.string(),
-  icon: z.string(),
-});
-
-export const FetchForecastResult = z.object({
-  location: z.object({
-    name: z.string(),
-    localtime: z.string(),
-  }),
-  forecast: z.object({
-    forecastday: z.array(
-      z.object({
-        date: z.string(),
-        day: z.object({
-          avgtemp_c: z.number(),
-          condition: conditionSchema,
-        }),
-        hour: z.array(
-          z.object({
-            time: z.string(),
-            temp_c: z.number(),
-            condition: conditionSchema,
-          }),
-        ),
-      }),
-    ),
-  }),
-});
-
 export const TodayHighlightSchema = z.object({
   name: z.string(),
   timestamp: z.string(),
@@ -50,4 +20,40 @@ export const CurrentWeatherSchema = z.object({
 
   condition: z.string(),
   icon: z.string(),
+});
+
+export const ForecastSchema = z.object({
+  name: z.string(),
+  localtime: z.string(),
+  timestamp: z.string(),
+  dayForecasts: z.array(
+    z.object({
+      date: z.string(),
+      avgtemp_c: z.number(),
+      condition: z.string(),
+      icon: z.string(),
+      hourForecasts: z.array(
+        z.object({
+          hour: z.string(),
+          temp_c: z.number(),
+          condition: z.string(),
+          icon: z.string(),
+        }),
+      ),
+    }),
+  ),
+});
+
+export const WeekForecastSchema = z.object({
+  name: z.string(),
+  localtime: z.string(),
+  timestamp: z.string(),
+  dayForecasts: z.array(
+    z.object({
+      date: z.string(),
+      avgtemp_c: z.number(),
+      condition: z.string(),
+      icon: z.string(),
+    }),
+  ),
 });

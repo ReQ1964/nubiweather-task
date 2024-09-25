@@ -3,15 +3,13 @@ import {
   isTimeExpired,
 } from '@/helpers/controllerHelpers';
 import { prisma } from '@/prismaClient';
-import {
-  ForecastSchema,
-  ForecastSchemaType,
-  UnFlattenedForecastSchema,
-} from '@/schema/weatherApi';
+import { UnFlattenedForecastSchema } from '@/schema/weatherApi';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { NextFunction, Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
+import { ForecastSchema } from 'shared-schemas/apiSchemas';
+import { ForecastSchemaType } from 'shared-types/apiTypes';
 
 const deleteExistingForecasts = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,6 +62,7 @@ const upsertForecastData = async (
     update: forecastCreateUpdatePayload,
     create: {
       name: validatedData.name,
+      localtime: validatedData.localtime,
       timestamp: validatedData.timestamp,
       ...forecastCreateUpdatePayload,
     },

@@ -41,6 +41,7 @@ model HighlightData {
 model ForecastData {
   id        Int    @id @default(autoincrement())
   name      String @unique // Location name
+  localtime String
   timestamp String // Timestamp of the data
 
   dayForecasts DayForecast[]
