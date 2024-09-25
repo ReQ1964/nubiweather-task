@@ -14,10 +14,10 @@ datasource db {
 }
 
 model WeatherData {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique // Location name
+  id        Int    @id @default(autoincrement())
+  name      String @unique // Location name
   country   String // Location country
-  localtime DateTime // Location local time
+  localtime String // Location local time
 
   temp_c    Float // Current temperature
   condition String // Weather condition text
@@ -25,9 +25,9 @@ model WeatherData {
 }
 
 model HighlightData {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique // Location name
-  localtime DateTime // Location local time
+  id        Int    @id @default(autoincrement())
+  name      String @unique // Location name
+  localtime String // Location local time
 
   humidity    Int // Humidity percentage
   uv          Float // UV index
@@ -40,7 +40,7 @@ model HighlightData {
 model ForecastDay {
   id            Int            @id @default(autoincrement())
   date          String
-  timestamp     DateTime
+  timestamp     String
   hourForecasts HourForecast[]
 }
 

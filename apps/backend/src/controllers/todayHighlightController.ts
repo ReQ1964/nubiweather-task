@@ -24,7 +24,6 @@ export const getTodayHighlight = expressAsyncHandler(
     });
 
     const parsedData = UnFlattenedTodayHighlightSchema.parse(data);
-
     const flattenedData = flattenTodayData<
       UnFlattenedTodayHighlightSchemaType,
       TodayHighlightSchemaType

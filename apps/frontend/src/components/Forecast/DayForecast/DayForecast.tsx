@@ -30,6 +30,7 @@ const filterHours = (
   currentHour: string,
 ) => {
   const filteredHours = hours.filter(({ time }) => {
+    console.log(time);
     const hour = dayjs(time).format('HH:00');
     return isToday ? hour >= currentHour : true;
   });
@@ -63,7 +64,7 @@ const DayForecast = () => {
     errorClassName: 'mb-6 h-full min-h-[120px]',
     renderData: (data) => {
       const { forecastday: forecastDays } = data.forecast;
-      const currentHour = dayjs().format('HH:00');
+      const currentHour = dayjs(data.location.localtime).format('HH:00');
 
       const filteredForecasts = forecastDays.map((day, index) =>
         filterHours(day.hour, index === 0, currentHour),

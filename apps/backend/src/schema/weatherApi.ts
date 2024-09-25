@@ -3,8 +3,7 @@ import { z } from 'zod';
 export const UnFlattenedTodayHighlightSchema = z.object({
   location: z.object({
     name: z.string(),
-    localtime: z.string().transform((val) => new Date(val).toISOString()),
-    tz_id: z.string(),
+    localtime: z.string(),
   }),
   current: z.object({
     humidity: z.number(),
@@ -29,8 +28,7 @@ export const UnFlattenedCurrentWeatherSchema = z.object({
   location: z.object({
     name: z.string(),
     country: z.string(),
-    localtime: z.string().transform((val) => new Date(val).toISOString()),
-    tz_id: z.string(),
+    localtime: z.string(),
   }),
   current: z.object({
     temp_c: z.number(),

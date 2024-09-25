@@ -6,6 +6,10 @@ const conditionSchema = z.object({
 });
 
 export const FetchForecastResult = z.object({
+  location: z.object({
+    name: z.string(),
+    localtime: z.string(),
+  }),
   forecast: z.object({
     forecastday: z.array(
       z.object({
@@ -28,7 +32,7 @@ export const FetchForecastResult = z.object({
 
 export const TodayHighlightSchema = z.object({
   name: z.string(),
-  localtime: z.string().transform((val) => new Date(val).toISOString()),
+  localtime: z.string(),
   humidity: z.number(),
   uv: z.number(),
   vis_km: z.number(),
@@ -40,7 +44,7 @@ export const TodayHighlightSchema = z.object({
 export const CurrentWeatherSchema = z.object({
   name: z.string(),
   country: z.string(),
-  localtime: z.string().transform((val) => new Date(val).toISOString()),
+  localtime: z.string(),
   temp_c: z.number(),
 
   condition: z.string(),

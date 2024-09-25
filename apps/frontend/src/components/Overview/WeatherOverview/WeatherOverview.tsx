@@ -25,8 +25,9 @@ const WeatherOverview = (): ReactNode => {
       'flex items-center justify-center px-4 py-20 lg:w-3/12 lg:rounded-l-3xl lg:p-8',
     renderData: (data) => {
       const { name, country, localtime, temp_c, condition, icon } = data;
+
       const formattedDate = dayjs(localtime).format('dddd, D MMMM');
-      const formattedTime = dayjs().format('HH:mm');
+      const formattedTime = dayjs(localtime).format('HH:mm');
 
       return (
         <section
