@@ -74,8 +74,7 @@ const DayForecast = () => {
           {filteredForecasts
             .flat()
             .map(({ time, temp_c, condition }, index) => {
-              console.log(time);
-              const hour = dayjs(time).format('hh:mm A');
+              const hour = dayjs(time).format('HH:mm');
 
               return (
                 <SwiperSlide key={`${time}-${index}`} data-testid="data-out">

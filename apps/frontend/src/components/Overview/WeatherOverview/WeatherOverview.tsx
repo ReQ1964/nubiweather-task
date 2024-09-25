@@ -26,6 +26,7 @@ const WeatherOverview = (): ReactNode => {
     renderData: (data) => {
       const { name, country, localtime, temp_c, condition, icon } = data;
       const formattedDate = dayjs(localtime).format('dddd, D MMMM');
+      const formattedTime = dayjs().format('HH:mm');
 
       return (
         <section
@@ -34,11 +35,12 @@ const WeatherOverview = (): ReactNode => {
         >
           <header className="mx-auto flex flex-col gap-4 lg:w-full">
             <nav className="relative flex flex-col gap-4">
-              <div>
+              <div className="relative">
                 <h2 className="mb-2 mr-7 text-3xl">
                   <span className="sm:text-4xl">{name}</span>, {country}
                 </h2>
                 <p>{formattedDate}</p>
+                <p>{formattedTime}</p>
               </div>
               <CityAutocompleteInput />
             </nav>

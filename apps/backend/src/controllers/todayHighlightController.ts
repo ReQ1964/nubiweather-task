@@ -9,22 +9,11 @@ import expressAsyncHandler from 'express-async-handler';
 import { TodayHighlightSchema } from 'shared-schemas/apiSchemas';
 import { TodayHighlightSchemaType } from 'shared-types/apiTypes';
 
-import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
+import { flattenTodayData } from '../helpers/controllerHelpers';
 
 export const getTodayHighlight = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { city } = req.query;
-
-    const highlightData = await prisma.highlightData.findFirst();
-
-    if (highlightData) {
-      const isTimeOutdated = compareTime(highlightData.localtime.toString());
-
-      if (!isTimeOutdated) {
-        res.json(highlightData);
-        return;
-      }
-    }
 
     const { data } = await axios.get(`${process.env.API_URL}/current.json`, {
       params: {
@@ -35,6 +24,7 @@ export const getTodayHighlight = expressAsyncHandler(
     });
 
     const parsedData = UnFlattenedTodayHighlightSchema.parse(data);
+
     const flattenedData = flattenTodayData<
       UnFlattenedTodayHighlightSchemaType,
       TodayHighlightSchemaType
@@ -42,17 +32,14 @@ export const getTodayHighlight = expressAsyncHandler(
 
     const validatedData = TodayHighlightSchema.parse(flattenedData);
 
-    if (!highlightData) {
-      await prisma.highlightData.create({
-        data: validatedData,
-      });
-    } else {
-      await prisma.highlightData.update({
-        where: { id: 1 },
-        data: validatedData,
-      });
-    }
+    const updatedHighlightData = await prisma.highlightData.upsert({
+      where: { name: city as string },
+      update: validatedData,
+      create: validatedData,
+    });
 
-    res.json(flattenedData);
+    res.json(updatedHighlightData);
   },
 );
+
+// Fetch 7 days and set to db, with 30min timeout, endpoint fetches the number of given days

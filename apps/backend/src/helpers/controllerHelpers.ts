@@ -5,7 +5,7 @@ export const compareTime = (inputTime: string): boolean => {
   const parsedTime = dayjs(inputTime);
   const currentTime = dayjs();
 
-  return currentTime.isAfter(parsedTime.add(30, 'minute'));
+  return currentTime.isAfter(parsedTime.add(15, 'minute'));
 };
 
 export const flattenTodayData = <T, R>(parsedData: T): R => {

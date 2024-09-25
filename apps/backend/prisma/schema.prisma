@@ -15,7 +15,7 @@ datasource db {
 
 model WeatherData {
   id        Int      @id @default(autoincrement())
-  name      String // Location name
+  name      String   @unique // Location name
   country   String // Location country
   localtime DateTime // Location local time
 
@@ -25,8 +25,10 @@ model WeatherData {
 }
 
 model HighlightData {
-  id          Int      @id @default(autoincrement())
-  localtime   DateTime // Location local time
+  id        Int      @id @default(autoincrement())
+  name      String   @unique // Location name
+  localtime DateTime // Location local time
+
   humidity    Int // Humidity percentage
   uv          Float // UV index
   vis_km      Float // Visibility in kilometers

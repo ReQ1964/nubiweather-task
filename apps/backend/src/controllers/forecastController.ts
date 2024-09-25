@@ -1,20 +1,18 @@
+import { prisma } from '@/prismaClient';
+import {
+  ForecastSchema,
+  ForecastSchemaType,
+  UnFlattenedForecastSchema,
+  UnFlattenedTodayHighlightSchemaType,
+} from '@/schema/weatherApi';
+import axios from 'axios';
+import dayjs from 'dayjs';
 import { Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import axios from 'axios';
-import {
-  UnFlattenedOneDayForecastSchema,
-  UnFlattenedOneDayForecastSchemaType,
-} from '@/schema/weatherApi';
-import {
-  OneDayForecastSchema,
-  OneDayForecastSchemaType,
-} from '@/schema/weatherApi';
-import { prisma } from '@/prismaClient';
-import dayjs from 'dayjs';
 
 function flattenForecastDays(
-  forecastDays: UnFlattenedOneDayForecastSchemaType['forecast']['forecastday'],
-): OneDayForecastSchemaType {
+  forecastDays: UnFlattenedTodayHighlightSchemaType['forecast']['forecastday'],
+): ForecastSchemaType {
   return forecastDays.map((dayForecast) => ({
     date: dayForecast.date,
     timestamp: dayjs().toISOString(),
@@ -46,10 +44,10 @@ export const getForecastData = expressAsyncHandler(
       },
     });
 
-    const parsedData = UnFlattenedOneDayForecastSchema.parse(data);
+    const parsedData = UnFlattenedForecastSchema.parse(data);
     const flattenedData = flattenForecastDays(parsedData.forecast.forecastday);
 
-    const validatedData = OneDayForecastSchema.parse(flattenedData);
+    const validatedData = ForecastSchema.parse(flattenedData);
 
     if (!forecastData) {
       await Promise.all(

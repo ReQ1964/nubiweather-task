@@ -27,6 +27,7 @@ export const FetchForecastResult = z.object({
 });
 
 export const TodayHighlightSchema = z.object({
+  name: z.string(),
   localtime: z.string().transform((val) => new Date(val).toISOString()),
   humidity: z.number(),
   uv: z.number(),
