@@ -17,7 +17,7 @@ const checkDataExpiry = (modelName: string): RequestHandler => {
       if (latestDbData && !isTimeExpired(latestDbData.localtime.toString())) {
         res.json(latestDbData);
       } else {
-        next();
+        return next();
       }
     },
   );

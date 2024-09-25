@@ -3,10 +3,71 @@ import {
   isTimeExpired,
 } from '@/helpers/controllerHelpers';
 import { prisma } from '@/prismaClient';
-import { ForecastSchema, UnFlattenedForecastSchema } from '@/schema/weatherApi';
+import {
+  ForecastSchema,
+  ForecastSchemaType,
+  UnFlattenedForecastSchema,
+} from '@/schema/weatherApi';
 import axios from 'axios';
 import { NextFunction, Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
+
+const deleteExistingForecasts = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  existingForecast: any,
+): Promise<void> => {
+  const dayIdsToDelete = existingForecast.dayForecasts.map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (day: any) => day.id,
+  );
+
+  await prisma.hourForecast.deleteMany({
+    where: {
+      forecastDayId: {
+        in: dayIdsToDelete,
+      },
+    },
+  });
+
+  await prisma.dayForecast.deleteMany({
+    where: {
+      forecastDataId: existingForecast.id,
+    },
+  });
+};
+
+const upsertForecastData = async (
+  validatedData: ForecastSchemaType,
+): Promise<void> => {
+  const forecastCreateUpdatePayload = {
+    localtime: validatedData.localtime,
+    dayForecasts: {
+      create: validatedData.dayForecasts.map((dayForecast) => ({
+        date: dayForecast.date,
+        avgtemp_c: dayForecast.avgtemp_c,
+        condition: dayForecast.condition,
+        icon: dayForecast.icon,
+        hourForecasts: {
+          create: dayForecast.hourForecasts.map((hourForecast) => ({
+            hour: hourForecast.hour,
+            temp_c: hourForecast.temp_c,
+            condition: hourForecast.condition,
+            icon: hourForecast.icon,
+          })),
+        },
+      })),
+    },
+  };
+
+  await prisma.forecastData.upsert({
+    where: { name: validatedData.name },
+    update: forecastCreateUpdatePayload,
+    create: {
+      name: validatedData.name,
+      ...forecastCreateUpdatePayload,
+    },
+  });
+};
 
 export const checkForecastDataExpiry = expressAsyncHandler(
   async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
@@ -14,15 +75,11 @@ export const checkForecastDataExpiry = expressAsyncHandler(
 
     const existingForecast = await prisma.forecastData.findUnique({
       where: { name: city },
-      include: {
-        dayForecasts: true,
-      },
+      include: { dayForecasts: true },
     });
 
-    if (existingForecast) {
-      if (!isTimeExpired(existingForecast.localtime)) {
-        next();
-      }
+    if (existingForecast && !isTimeExpired(existingForecast.localtime)) {
+      return next();
     }
 
     const { data } = await axios.get(`${process.env.API_URL}/forecast.json`, {
@@ -39,63 +96,10 @@ export const checkForecastDataExpiry = expressAsyncHandler(
     const validatedData = ForecastSchema.parse(flattenedData);
 
     if (existingForecast) {
-      await prisma.hourForecast.deleteMany({
-        where: {
-          forecastDayId: {
-            in: existingForecast.dayForecasts.map((day) => day.id),
-          },
-        },
-      });
-
-      await prisma.dayForecast.deleteMany({
-        where: {
-          forecastDataId: existingForecast.id,
-        },
-      });
+      await deleteExistingForecasts(existingForecast);
     }
 
-    await prisma.forecastData.upsert({
-      where: { name: validatedData.name },
-      update: {
-        localtime: validatedData.localtime,
-        dayForecasts: {
-          create: validatedData.dayForecasts.map((dayForecast) => ({
-            date: dayForecast.date,
-            avgtemp_c: dayForecast.avgtemp_c,
-            condition: dayForecast.condition,
-            icon: dayForecast.icon,
-            hourForecasts: {
-              create: dayForecast.hourForecasts.map((hourForecast) => ({
-                hour: hourForecast.hour,
-                temp_c: hourForecast.temp_c,
-                condition: hourForecast.condition,
-                icon: hourForecast.icon,
-              })),
-            },
-          })),
-        },
-      },
-      create: {
-        name: validatedData.name,
-        localtime: validatedData.localtime,
-        dayForecasts: {
-          create: validatedData.dayForecasts.map((dayForecast) => ({
-            date: dayForecast.date,
-            avgtemp_c: dayForecast.avgtemp_c,
-            condition: dayForecast.condition,
-            icon: dayForecast.icon,
-            hourForecasts: {
-              create: dayForecast.hourForecasts.map((hourForecast) => ({
-                hour: hourForecast.hour,
-                temp_c: hourForecast.temp_c,
-                condition: hourForecast.condition,
-                icon: hourForecast.icon,
-              })),
-            },
-          })),
-        },
-      },
-    });
+    await upsertForecastData(validatedData);
     next();
   },
 );
@@ -111,6 +115,7 @@ export const getWeekForecast = expressAsyncHandler(
         },
       },
     });
+
     res.json(forecastData);
   },
 );
@@ -129,6 +134,7 @@ export const getOneDayForecast = expressAsyncHandler(
         },
       },
     });
+
     res.json(forecastData);
   },
 );
