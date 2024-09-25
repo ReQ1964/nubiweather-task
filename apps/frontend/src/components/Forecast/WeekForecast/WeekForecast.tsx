@@ -1,11 +1,11 @@
 import { CurrentCityContext } from '@/App';
-import { API_KEY, API_URL } from '@/constants/api';
+import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
 import dayjs from 'dayjs';
 import { useContext } from 'react';
-import { FetchForecastResult } from 'shared-schemas/apiSchemas';
-import { ForecastData } from 'shared-types/apiTypes';
+import { WeekForecastSchema } from 'shared-schemas/apiSchemas';
+import { WeekForecastSchemaType } from 'shared-types/apiTypes';
 import { SwiperSlide } from 'swiper/react';
 
 import SwiperWrapper from '../../UI/SwiperWrapper/SwiperWrapper';
@@ -15,20 +15,18 @@ import ForecastTileSkeleton from '../ForecastTile/ForecastTileSkeleton';
 const WeekForecast = () => {
   const { currentCity } = useContext(CurrentCityContext);
 
-  const fetchResult = useApiData<ForecastData>(
+  const fetchResult = useApiData<WeekForecastSchemaType>(
     currentCity,
-    `${API_URL}forecast.json?days=7&key=${API_KEY}&q=${currentCity}`,
-    FetchForecastResult,
+    `${API_URL}forecast/week`,
+    WeekForecastSchema,
     'week',
   );
 
   const LoadingComponent = () => (
     <div className="flex justify-start gap-8 overflow-hidden">
-      {Array(4)
-        .fill(null)
-        .map((_, i) => (
-          <ForecastTileSkeleton key={i} />
-        ))}
+      {Array(4).map((_, i) => (
+        <ForecastTileSkeleton key={i} />
+      ))}
     </div>
   );
 
@@ -37,9 +35,9 @@ const WeekForecast = () => {
     loadingComponent: <LoadingComponent />,
     errorClassName: 'mb-6 h-full min-h-[120px]',
     renderData: (data) => {
-      const forecastDays = data.forecast.forecastday;
+      const { dayForecasts } = data;
       const dataWithoutCurrentDay =
-        forecastDays.length > 1 ? forecastDays.slice(1) : [];
+        dayForecasts.length > 1 ? dayForecasts.slice(1) : [];
       return (
         <SwiperWrapper>
           {dataWithoutCurrentDay.map((item, index) => {
@@ -49,9 +47,9 @@ const WeekForecast = () => {
               <SwiperSlide key={item.date}>
                 <ForecastTile
                   topInfo={weekday}
-                  temperature={item.day.avgtemp_c}
-                  weatherIcon={item.day.condition.icon}
-                  weatherText={item.day.condition.text}
+                  temperature={item.avgtemp_c}
+                  weatherIcon={item.icon}
+                  weatherText={item.condition}
                   first={index === 0}
                 />
               </SwiperSlide>

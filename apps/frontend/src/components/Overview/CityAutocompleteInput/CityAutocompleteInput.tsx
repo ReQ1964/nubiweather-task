@@ -7,9 +7,15 @@ import { useContext, useEffect, useState } from 'react';
 
 import CityAutocompleteSuggestion from './CityAutocompleteSuggestion/CityAutocompleteSuggestion';
 
-type CityUnion = 'Gliwice' | 'Hamburg' | 'Katowice' | 'Warsaw';
+type CityUnion = 'Gliwice' | 'Hamburg' | 'Katowice' | 'Warsaw' | 'Bogota';
 
-const cities: CityUnion[] = ['Gliwice', 'Hamburg', 'Katowice', 'Warsaw'];
+const cities: CityUnion[] = [
+  'Gliwice',
+  'Hamburg',
+  'Katowice',
+  'Warsaw',
+  'Bogota',
+];
 
 const filterSuggestions = (input: string, cities: CityUnion[]) => {
   return cities.filter((city) =>

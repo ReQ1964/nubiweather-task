@@ -1,8 +1,11 @@
-import { Router } from 'express';
 import { getTodayHighlight } from '@/controllers/todayHighlightController';
+import checkDataExpiry from '@/middlewares/checkDataExpiry';
+import { Router } from 'express';
 
 const todayHighlightRouter = Router();
 
-todayHighlightRouter.route('/').get(getTodayHighlight);
+todayHighlightRouter
+  .route('/')
+  .get(checkDataExpiry('highlightData'), getTodayHighlight);
 
 export default todayHighlightRouter;

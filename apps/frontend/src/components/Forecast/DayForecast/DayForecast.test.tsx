@@ -45,7 +45,7 @@ describe('DayForecast', () => {
     ];
 
     for (const { time, temp, altText, iconSrc } of dataAssertions) {
-      await screen.findByText(dayjs(time).format('hh:mm A'));
+      await screen.findByText(dayjs(time).format('HH:mm'));
       await screen.findByText(temp);
       const img = screen.getByAltText(altText);
       expect(img).toHaveAttribute('src', iconSrc);

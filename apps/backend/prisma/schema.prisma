@@ -14,10 +14,11 @@ datasource db {
 }
 
 model WeatherData {
-  id        Int      @id @default(autoincrement())
-  name      String // Location name
+  id        Int    @id @default(autoincrement())
+  name      String @unique // Location name
   country   String // Location country
-  localtime DateTime // Location local time
+  localtime String // Location local time
+  timestamp String // Timestamp of the data
 
   temp_c    Float // Current temperature
   condition String // Weather condition text
@@ -25,12 +26,45 @@ model WeatherData {
 }
 
 model HighlightData {
-  id          Int      @id @default(autoincrement())
-  localtime   DateTime // Location local time
+  id        Int    @id @default(autoincrement())
+  name      String @unique // Location name
+  timestamp String // Timestamp of the data
+
   humidity    Int // Humidity percentage
   uv          Float // UV index
   vis_km      Float // Visibility in kilometers
   wind_kph    Float // Wind speed in kilometers per hour
   precip_mm   Float // Precipitation in millimeters
   heatindex_c Float // Heat index in Celsius
+}
+
+model ForecastData {
+  id        Int    @id @default(autoincrement())
+  name      String @unique // Location name
+  localtime String
+  timestamp String // Timestamp of the data
+
+  dayForecasts DayForecast[]
+}
+
+model DayForecast {
+  id        Int    @id @default(autoincrement())
+  date      String
+  avgtemp_c Float
+  condition String
+  icon      String
+
+  hourForecasts  HourForecast[]
+  ForecastData   ForecastData?  @relation(fields: [forecastDataId], references: [id])
+  forecastDataId Int?
+}
+
+model HourForecast {
+  id            Int         @id @default(autoincrement())
+  hour          String
+  temp_c        Float
+  condition     String
+  icon          String
+  forecast      DayForecast @relation(fields: [forecastDayId], references: [id])
+  forecastDayId Int
 }

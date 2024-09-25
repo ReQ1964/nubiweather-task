@@ -1,57 +1,46 @@
-import { Request, Response } from 'express';
-import axios from 'axios';
 import { prisma } from '@/prismaClient';
-import { compareTime, flattenTodayData } from '../helpers/controllerHelpers';
 import {
-  UnFlattenedTodayHighlightSchemaType,
   UnFlattenedTodayHighlightSchema,
+  UnFlattenedTodayHighlightSchemaType,
 } from '@/schema/weatherApi';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { Request, Response } from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import { TodayHighlightSchema } from 'shared-schemas/apiSchemas';
 import { TodayHighlightSchemaType } from 'shared-types/apiTypes';
 
-export const getTodayHighlight = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  const { city } = req.query;
+import { flattenTodayData } from '../helpers/controllerHelpers';
 
-  const highlightData = await prisma.highlightData.findFirst();
-
-  if (highlightData) {
-    const isTimeOutdated = compareTime(highlightData.localtime.toString());
-
-    if (!isTimeOutdated) {
-      res.json(highlightData);
-      return;
-    }
-  }
-
-  const { data } = await axios.get(`${process.env.API_URL}/current.json`, {
-    params: {
-      key: process.env.API_KEY,
-      q: city,
-      aqi: 'no',
-    },
-  });
-
-  const parsedData = UnFlattenedTodayHighlightSchema.parse(data);
-  const flattenedData = flattenTodayData<
-    UnFlattenedTodayHighlightSchemaType,
-    TodayHighlightSchemaType
-  >(parsedData);
-
-  const validatedData = TodayHighlightSchema.parse(flattenedData);
-
-  if (!highlightData) {
-    await prisma.highlightData.create({
-      data: validatedData,
+export const getTodayHighlight = expressAsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const { city } = req.query;
+    const { data } = await axios.get(`${process.env.API_URL}/current.json`, {
+      params: {
+        key: process.env.API_KEY,
+        q: city,
+        aqi: 'no',
+      },
     });
-  } else {
-    await prisma.highlightData.update({
-      where: { id: 1 },
-      data: validatedData,
-    });
-  }
 
-  res.json(flattenedData);
-};
+    const parsedData = UnFlattenedTodayHighlightSchema.parse(data);
+    const flattenedData = flattenTodayData<
+      UnFlattenedTodayHighlightSchemaType,
+      TodayHighlightSchemaType
+    >(parsedData);
+
+    const currentTimestamp = dayjs().toISOString();
+    const validatedData = TodayHighlightSchema.parse({
+      ...flattenedData,
+      timestamp: currentTimestamp,
+    });
+
+    const updatedHighlightData = await prisma.highlightData.upsert({
+      where: { name: city as string },
+      update: validatedData,
+      create: validatedData,
+    });
+
+    res.json(updatedHighlightData);
+  },
+);
