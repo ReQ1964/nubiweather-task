@@ -18,6 +18,7 @@ model WeatherData {
   name      String @unique // Location name
   country   String // Location country
   localtime String // Location local time
+  timestamp String // Timestamp of the data
 
   temp_c    Float // Current temperature
   condition String // Weather condition text
@@ -27,7 +28,7 @@ model WeatherData {
 model HighlightData {
   id        Int    @id @default(autoincrement())
   name      String @unique // Location name
-  localtime String // Location local time
+  timestamp String // Timestamp of the data
 
   humidity    Int // Humidity percentage
   uv          Float // UV index
@@ -40,7 +41,7 @@ model HighlightData {
 model ForecastData {
   id        Int    @id @default(autoincrement())
   name      String @unique // Location name
-  localtime String // Location local time
+  timestamp String // Timestamp of the data
 
   dayForecasts DayForecast[]
 }

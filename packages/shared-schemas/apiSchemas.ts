@@ -32,7 +32,7 @@ export const FetchForecastResult = z.object({
 
 export const TodayHighlightSchema = z.object({
   name: z.string(),
-  localtime: z.string(),
+  timestamp: z.string(),
   humidity: z.number(),
   uv: z.number(),
   vis_km: z.number(),
@@ -45,6 +45,7 @@ export const CurrentWeatherSchema = z.object({
   name: z.string(),
   country: z.string(),
   localtime: z.string(),
+  timestamp: z.string(),
   temp_c: z.number(),
 
   condition: z.string(),

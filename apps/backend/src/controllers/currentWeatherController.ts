@@ -3,6 +3,7 @@ import {
   UnFlattenedCurrentWeatherSchemaType,
 } from '@/schema/weatherApi';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';
@@ -29,7 +30,11 @@ export const getCurrentWeather = expressAsyncHandler(
       CurrentWeatherSchemaType
     >(parsedData);
 
-    const validatedData = CurrentWeatherSchema.parse(flattenedData);
+    const currentTimestamp = dayjs().toISOString();
+    const validatedData = CurrentWeatherSchema.parse({
+      ...flattenedData,
+      timestamp: currentTimestamp,
+    });
 
     const updatedWeatherData = await prisma.weatherData.upsert({
       where: { name: city as string },

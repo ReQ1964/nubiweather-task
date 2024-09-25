@@ -32,7 +32,7 @@ export const flattenTodayData = <T, R>(parsedData: T): R => {
 export const flattenForecastDays = (
   parsedData: UnFlattenedForecastSchemaType,
 ): ForecastSchemaType => {
-  const { name, localtime } = parsedData.location;
+  const { name } = parsedData.location;
 
   const dayForecasts = parsedData.forecast.forecastday.map((dayForecast) => ({
     date: dayForecast.date,
@@ -49,7 +49,7 @@ export const flattenForecastDays = (
 
   return {
     name,
-    localtime,
+    timestamp: '',
     dayForecasts,
   };
 };

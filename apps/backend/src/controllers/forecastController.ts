@@ -9,6 +9,7 @@ import {
   UnFlattenedForecastSchema,
 } from '@/schema/weatherApi';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { NextFunction, Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 
@@ -40,7 +41,6 @@ const upsertForecastData = async (
   validatedData: ForecastSchemaType,
 ): Promise<void> => {
   const forecastCreateUpdatePayload = {
-    localtime: validatedData.localtime,
     dayForecasts: {
       create: validatedData.dayForecasts.map((dayForecast) => ({
         date: dayForecast.date,
@@ -64,6 +64,7 @@ const upsertForecastData = async (
     update: forecastCreateUpdatePayload,
     create: {
       name: validatedData.name,
+      timestamp: validatedData.timestamp,
       ...forecastCreateUpdatePayload,
     },
   });
@@ -78,7 +79,7 @@ export const checkForecastDataExpiry = expressAsyncHandler(
       include: { dayForecasts: true },
     });
 
-    if (existingForecast && !isTimeExpired(existingForecast.localtime)) {
+    if (existingForecast && !isTimeExpired(existingForecast.timestamp)) {
       return next();
     }
 
@@ -93,7 +94,12 @@ export const checkForecastDataExpiry = expressAsyncHandler(
 
     const parsedData = UnFlattenedForecastSchema.parse(data);
     const flattenedData = flattenForecastDays(parsedData);
-    const validatedData = ForecastSchema.parse(flattenedData);
+
+    const currentTimestamp = dayjs().toISOString();
+    const validatedData = ForecastSchema.parse({
+      ...flattenedData,
+      timestamp: currentTimestamp,
+    });
 
     if (existingForecast) {
       await deleteExistingForecasts(existingForecast);

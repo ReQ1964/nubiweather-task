@@ -3,7 +3,6 @@ import { z } from 'zod';
 export const UnFlattenedTodayHighlightSchema = z.object({
   location: z.object({
     name: z.string(),
-    localtime: z.string(),
   }),
   current: z.object({
     humidity: z.number(),
@@ -43,7 +42,6 @@ export type UnFlattenedCurrentWeatherSchemaType = z.infer<
 export const UnFlattenedForecastSchema = z.object({
   location: z.object({
     name: z.string(),
-    localtime: z.string(),
   }),
   forecast: z.object({
     forecastday: z.array(
@@ -71,7 +69,7 @@ export type UnFlattenedForecastSchemaType = z.infer<
 
 export const ForecastSchema = z.object({
   name: z.string(),
-  localtime: z.string(),
+  timestamp: z.string(),
   dayForecasts: z.array(
     z.object({
       date: z.string(),

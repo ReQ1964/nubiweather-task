@@ -4,6 +4,7 @@ import {
   UnFlattenedTodayHighlightSchemaType,
 } from '@/schema/weatherApi';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { TodayHighlightSchema } from 'shared-schemas/apiSchemas';
@@ -14,7 +15,6 @@ import { flattenTodayData } from '../helpers/controllerHelpers';
 export const getTodayHighlight = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { city } = req.query;
-
     const { data } = await axios.get(`${process.env.API_URL}/current.json`, {
       params: {
         key: process.env.API_KEY,
@@ -29,7 +29,11 @@ export const getTodayHighlight = expressAsyncHandler(
       TodayHighlightSchemaType
     >(parsedData);
 
-    const validatedData = TodayHighlightSchema.parse(flattenedData);
+    const currentTimestamp = dayjs().toISOString();
+    const validatedData = TodayHighlightSchema.parse({
+      ...flattenedData,
+      timestamp: currentTimestamp,
+    });
 
     const updatedHighlightData = await prisma.highlightData.upsert({
       where: { name: city as string },
@@ -40,5 +44,3 @@ export const getTodayHighlight = expressAsyncHandler(
     res.json(updatedHighlightData);
   },
 );
-
-// Fetch 7 days and set to db, with 30min timeout, endpoint fetches the number of given days
