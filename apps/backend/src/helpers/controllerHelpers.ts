@@ -1,7 +1,11 @@
+import {
+  ForecastSchemaType,
+  UnFlattenedForecastSchemaType,
+} from '@/schema/weatherApi';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs from 'dayjs';
 
-export const compareTime = (inputTime: string): boolean => {
+export const isTimeExpired = (inputTime: string): boolean => {
   const parsedTime = dayjs(inputTime);
   const currentTime = dayjs();
 
@@ -23,4 +27,29 @@ export const flattenTodayData = <T, R>(parsedData: T): R => {
 
   flatten(parsedData);
   return finalObj;
+};
+
+export const flattenForecastDays = (
+  parsedData: UnFlattenedForecastSchemaType,
+): ForecastSchemaType => {
+  const { name, localtime } = parsedData.location;
+
+  const dayForecasts = parsedData.forecast.forecastday.map((dayForecast) => ({
+    date: dayForecast.date,
+    avgtemp_c: dayForecast.day.avgtemp_c,
+    condition: dayForecast.day.condition.text,
+    icon: dayForecast.day.condition.icon,
+    hourForecasts: dayForecast.hour.map((hourForecast) => ({
+      hour: hourForecast.time.split(' ')[1],
+      temp_c: hourForecast.temp_c,
+      condition: hourForecast.condition.text,
+      icon: hourForecast.condition.icon,
+    })),
+  }));
+
+  return {
+    name,
+    localtime,
+    dayForecasts,
+  };
 };

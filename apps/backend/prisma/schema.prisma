@@ -37,11 +37,24 @@ model HighlightData {
   heatindex_c Float // Heat index in Celsius
 }
 
-model ForecastDay {
-  id            Int            @id @default(autoincrement())
-  date          String
-  timestamp     String
-  hourForecasts HourForecast[]
+model ForecastData {
+  id        Int    @id @default(autoincrement())
+  name      String @unique // Location name
+  localtime String // Location local time
+
+  dayForecasts DayForecast[]
+}
+
+model DayForecast {
+  id        Int    @id @default(autoincrement())
+  date      String
+  avgtemp_c Float
+  condition String
+  icon      String
+
+  hourForecasts  HourForecast[]
+  ForecastData   ForecastData?  @relation(fields: [forecastDataId], references: [id])
+  forecastDataId Int?
 }
 
 model HourForecast {
@@ -50,6 +63,6 @@ model HourForecast {
   temp_c        Float
   condition     String
   icon          String
-  forecast      ForecastDay @relation(fields: [forecastDayId], references: [id])
+  forecast      DayForecast @relation(fields: [forecastDayId], references: [id])
   forecastDayId Int
 }

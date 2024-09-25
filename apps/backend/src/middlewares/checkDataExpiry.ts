@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { compareTime } from '@/helpers/controllerHelpers';
+import { isTimeExpired } from '@/helpers/controllerHelpers';
 import { prisma } from '@/prismaClient';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
@@ -14,7 +14,7 @@ const checkDataExpiry = (modelName: string): RequestHandler => {
         where: { name: city as string },
       });
 
-      if (latestDbData && !compareTime(latestDbData.localtime.toString())) {
+      if (latestDbData && !isTimeExpired(latestDbData.localtime.toString())) {
         res.json(latestDbData);
       } else {
         next();

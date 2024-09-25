@@ -30,7 +30,6 @@ const filterHours = (
   currentHour: string,
 ) => {
   const filteredHours = hours.filter(({ time }) => {
-    console.log(time);
     const hour = dayjs(time).format('HH:00');
     return isToday ? hour >= currentHour : true;
   });

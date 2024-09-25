@@ -1,98 +1,134 @@
-import { prisma } from '@/prismaClient';
 import {
-  ForecastSchema,
-  ForecastSchemaType,
-  UnFlattenedForecastSchema,
-  UnFlattenedTodayHighlightSchemaType,
-} from '@/schema/weatherApi';
+  flattenForecastDays,
+  isTimeExpired,
+} from '@/helpers/controllerHelpers';
+import { prisma } from '@/prismaClient';
+import { ForecastSchema, UnFlattenedForecastSchema } from '@/schema/weatherApi';
 import axios from 'axios';
-import dayjs from 'dayjs';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 
-function flattenForecastDays(
-  forecastDays: UnFlattenedTodayHighlightSchemaType['forecast']['forecastday'],
-): ForecastSchemaType {
-  return forecastDays.map((dayForecast) => ({
-    date: dayForecast.date,
-    timestamp: dayjs().toISOString(),
-    hourForecasts: dayForecast.hour.map((hourForecast) => ({
-      hour: hourForecast.time.split(' ')[1],
-      temp_c: hourForecast.temp_c,
-      condition: hourForecast.condition.text,
-      icon: hourForecast.condition.icon,
-    })),
-  }));
-}
+export const checkForecastDataExpiry = expressAsyncHandler(
+  async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+    const { city } = req.query as { city: string };
 
-export const getForecastData = expressAsyncHandler(
-  async (req: Request, res: Response): Promise<void> => {
-    const { city } = req.query;
-
-    const forecastData = await prisma.forecastDay.findMany({
+    const existingForecast = await prisma.forecastData.findUnique({
+      where: { name: city },
       include: {
-        hourForecasts: true,
+        dayForecasts: true,
       },
     });
+
+    if (existingForecast) {
+      if (!isTimeExpired(existingForecast.localtime)) {
+        next();
+      }
+    }
 
     const { data } = await axios.get(`${process.env.API_URL}/forecast.json`, {
       params: {
         q: city,
         key: process.env.API_KEY,
-        days: 2,
+        days: 7,
         aqi: 'no',
       },
     });
 
     const parsedData = UnFlattenedForecastSchema.parse(data);
-    const flattenedData = flattenForecastDays(parsedData.forecast.forecastday);
-
+    const flattenedData = flattenForecastDays(parsedData);
     const validatedData = ForecastSchema.parse(flattenedData);
 
-    if (!forecastData) {
-      await Promise.all(
-        validatedData.map(async (forecastDay) => {
-          await prisma.forecastDay.create({
-            data: {
-              date: forecastDay.date,
-              timestamp: forecastDay.timestamp,
-              hourForecasts: {
-                create: forecastDay.hourForecasts.map((hourForecast) => ({
-                  hour: hourForecast.hour,
-                  temp_c: hourForecast.temp_c,
-                  condition: hourForecast.condition,
-                  icon: hourForecast.icon,
-                })),
-              },
-            },
-          });
-        }),
-      );
-    } else {
-      await Promise.all(
-        validatedData.map(async (forecastDay, index) => {
-          if (forecastData[index]) {
-            await prisma.forecastDay.update({
-              where: { id: forecastData[index].id },
-              data: {
-                date: forecastDay.date,
-                timestamp: forecastDay.timestamp,
-                hourForecasts: {
-                  deleteMany: {},
-                  create: forecastDay.hourForecasts.map((hourForecast) => ({
-                    hour: hourForecast.hour,
-                    temp_c: hourForecast.temp_c,
-                    condition: hourForecast.condition,
-                    icon: hourForecast.icon,
-                  })),
-                },
-              },
-            });
-          }
-        }),
-      );
+    if (existingForecast) {
+      await prisma.hourForecast.deleteMany({
+        where: {
+          forecastDayId: {
+            in: existingForecast.dayForecasts.map((day) => day.id),
+          },
+        },
+      });
+
+      await prisma.dayForecast.deleteMany({
+        where: {
+          forecastDataId: existingForecast.id,
+        },
+      });
     }
 
-    res.json(validatedData);
+    await prisma.forecastData.upsert({
+      where: { name: validatedData.name },
+      update: {
+        localtime: validatedData.localtime,
+        dayForecasts: {
+          create: validatedData.dayForecasts.map((dayForecast) => ({
+            date: dayForecast.date,
+            avgtemp_c: dayForecast.avgtemp_c,
+            condition: dayForecast.condition,
+            icon: dayForecast.icon,
+            hourForecasts: {
+              create: dayForecast.hourForecasts.map((hourForecast) => ({
+                hour: hourForecast.hour,
+                temp_c: hourForecast.temp_c,
+                condition: hourForecast.condition,
+                icon: hourForecast.icon,
+              })),
+            },
+          })),
+        },
+      },
+      create: {
+        name: validatedData.name,
+        localtime: validatedData.localtime,
+        dayForecasts: {
+          create: validatedData.dayForecasts.map((dayForecast) => ({
+            date: dayForecast.date,
+            avgtemp_c: dayForecast.avgtemp_c,
+            condition: dayForecast.condition,
+            icon: dayForecast.icon,
+            hourForecasts: {
+              create: dayForecast.hourForecasts.map((hourForecast) => ({
+                hour: hourForecast.hour,
+                temp_c: hourForecast.temp_c,
+                condition: hourForecast.condition,
+                icon: hourForecast.icon,
+              })),
+            },
+          })),
+        },
+      },
+    });
+    next();
+  },
+);
+
+export const getWeekForecast = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const { city } = req.query as { city: string };
+    const forecastData = await prisma.forecastData.findUnique({
+      where: { name: city },
+      include: {
+        dayForecasts: {
+          take: 7,
+        },
+      },
+    });
+    res.json(forecastData);
+  },
+);
+
+export const getOneDayForecast = expressAsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const { city } = req.query as { city: string };
+    const forecastData = await prisma.forecastData.findUnique({
+      where: { name: city },
+      include: {
+        dayForecasts: {
+          take: 2,
+          include: {
+            hourForecasts: true,
+          },
+        },
+      },
+    });
+    res.json(forecastData);
   },
 );
