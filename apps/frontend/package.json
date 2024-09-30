@@ -18,6 +18,7 @@
     "dayjs": "^1.11.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.26.2",
     "shared-schemas": "workspace:*",
     "shared-types": "workspace:*",
     "swiper": "^11.1.12",
