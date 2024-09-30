@@ -44,9 +44,11 @@ const DayForecast = () => {
 
   const LoadingComponent = () => (
     <div className="flex gap-8 overflow-hidden">
-      {Array(5).map((_, i) => (
-        <ForecastTileSkeleton key={i} />
-      ))}
+      {Array(4)
+        .fill(null)
+        .map((_, i) => (
+          <ForecastTileSkeleton key={i} />
+        ))}
     </div>
   );
 

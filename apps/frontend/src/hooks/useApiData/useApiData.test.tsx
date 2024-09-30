@@ -1,3 +1,4 @@
+import { API_URL } from '@/constants/api';
 import { mockCurrentWeatherData } from '@/libs/vitest/mocks/handlers';
 import { server } from '@/libs/vitest/mocks/server';
 import { mockedQueryClient } from '@/libs/vitest/mocks/tanstackQuery';
@@ -22,7 +23,7 @@ describe('useApiData', () => {
       () =>
         useApiData(
           'Gliwice',
-          'http://localhost:5000/currentWeather',
+          `${API_URL}currentWeather`,
           CurrentWeatherSchema,
           'overviewTest',
         ),
@@ -37,7 +38,7 @@ describe('useApiData', () => {
   });
   it('should throw an error when API returns 400', async () => {
     server.use(
-      http.get('http://localhost:5000/currentWeather', () => {
+      http.get(`${API_URL}currentWeather`, () => {
         return new HttpResponse('Bad Request', { status: 400 });
       }),
     );
@@ -45,7 +46,7 @@ describe('useApiData', () => {
       () =>
         useApiData(
           'Gliwice',
-          'http://localhost:5000/currentWeather',
+          `${API_URL}currentWeather`,
           CurrentWeatherSchema,
           'overviewTest2',
         ),

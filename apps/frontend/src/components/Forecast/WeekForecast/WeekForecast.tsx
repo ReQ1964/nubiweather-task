@@ -24,9 +24,11 @@ const WeekForecast = () => {
 
   const LoadingComponent = () => (
     <div className="flex justify-start gap-8 overflow-hidden">
-      {Array(4).map((_, i) => (
-        <ForecastTileSkeleton key={i} />
-      ))}
+      {Array(4)
+        .fill(null)
+        .map((_, i) => (
+          <ForecastTileSkeleton key={i} />
+        ))}
     </div>
   );
 
