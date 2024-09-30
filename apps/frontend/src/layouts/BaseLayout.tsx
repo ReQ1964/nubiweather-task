@@ -16,7 +16,7 @@ const BaseLayout = () => {
 
   return (
     <CurrentCityContext.Provider value={{ currentCity, setCurrentCity }}>
-      <Outlet />;
+      <Outlet />
     </CurrentCityContext.Provider>
   );
 };

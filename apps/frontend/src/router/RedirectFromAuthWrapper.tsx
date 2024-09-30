@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 const RedirectFromAuthWrapper = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   const from = location?.state?.from;
 
   return isAuthenticated ? <Navigate to={from ? from : '/'} /> : children;
