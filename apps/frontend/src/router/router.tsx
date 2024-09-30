@@ -1,36 +1,45 @@
 import BaseLayout from '@/layouts/BaseLayout';
 import HomePage from '@/pages/HomePage';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
+import ErrorPage from './ErrorPage';
 import ProtectedRoute from './ProtectedRoute';
+import RedirectFromAuthWrapper from './RedirectFromAuthWrapper';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <ProtectedRoute>
-        <BaseLayout />
-      </ProtectedRoute>
-    ),
-    errorElement: <div>Page not found!</div>,
+    element: <BaseLayout />,
+    errorElement: <ErrorPage />,
     children: [
+      { index: true, element: <HomePage /> },
       {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: '/account',
-        element: <div>account</div>,
+        path: 'account',
+        element: (
+          <ProtectedRoute>
+            <div>account</div>
+          </ProtectedRoute>
+        ),
       },
     ],
   },
   {
-    path: '/register',
-    element: <div>authRegister</div>,
+    path: '/auth',
+    element: (
+      <RedirectFromAuthWrapper>
+        <BaseLayout />
+      </RedirectFromAuthWrapper>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      { path: 'register', element: <div>register</div> },
+      { path: 'login', element: <div>login</div> },
+      { index: true, element: <Navigate to="/auth/login" replace /> },
+    ],
   },
   {
-    path: '/login',
-    element: <div>authLogin</div>,
+    path: '*',
+    element: <Navigate to="/" replace />,
   },
 ]);
 
