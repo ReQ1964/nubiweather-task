@@ -3,10 +3,10 @@ import { useContext } from 'react';
 
 import 'swiper/css';
 
-import { CurrentCityContext } from '@/App';
 import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+import { CurrentCityContext } from '@/layouts/BaseLayout';
 import { ForecastSchema } from 'shared-schemas/apiSchemas';
 import { ForecastSchemaType } from 'shared-types/apiTypes';
 import { SwiperSlide } from 'swiper/react';

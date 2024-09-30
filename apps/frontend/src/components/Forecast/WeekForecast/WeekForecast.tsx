@@ -1,7 +1,7 @@
-import { CurrentCityContext } from '@/App';
 import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+import { CurrentCityContext } from '@/layouts/BaseLayout';
 import dayjs from 'dayjs';
 import { useContext } from 'react';
 import { WeekForecastSchema } from 'shared-schemas/apiSchemas';

@@ -1,8 +1,8 @@
-import { CurrentCityContext } from '@/App';
 import cityImg from '@/assets/img/city-bg.jpg';
 import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+import { CurrentCityContext } from '@/layouts/BaseLayout';
 import dayjs from 'dayjs';
 import { ReactNode, useContext } from 'react';
 import { CurrentWeatherSchema } from 'shared-schemas/apiSchemas';

@@ -1,8 +1,8 @@
-import { CurrentCityContext } from '@/App';
 import {
   SUGGESTIONS_MATCH_ERROR,
   SUGGESTIONS_VALIDITY_ERROR,
 } from '@/constants/general';
+import { CurrentCityContext } from '@/layouts/BaseLayout';
 import { useContext, useEffect, useState } from 'react';
 
 import CityAutocompleteSuggestion from './CityAutocompleteSuggestion/CityAutocompleteSuggestion';

@@ -1,4 +1,3 @@
-import { CurrentCityContext } from '@/App';
 import HeatIndexIcon from '@/assets/icons/weatherStatus/HeatIndexIcon';
 import HumidityIcon from '@/assets/icons/weatherStatus/HumidityIcon';
 import RainPrecipitationIcon from '@/assets/icons/weatherStatus/RainPrecipitationIcon';
@@ -8,6 +7,7 @@ import WindIcon from '@/assets/icons/weatherStatus/WindIcon';
 import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
+import { CurrentCityContext } from '@/layouts/BaseLayout';
 import { useContext } from 'react';
 import { TodayHighlightSchema } from 'shared-schemas/apiSchemas';
 import { TodayHighlightSchemaType } from 'shared-types/apiTypes';

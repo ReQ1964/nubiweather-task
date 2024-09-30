@@ -15,7 +15,7 @@ const ForecastModeToggler = ({
   ];
 
   return (
-    <div className="mb-6 flex flex-row gap-3">
+    <div className=" flex flex-row gap-3">
       {buttons.map(({ mode, label }) => (
         <button
           key={mode}
