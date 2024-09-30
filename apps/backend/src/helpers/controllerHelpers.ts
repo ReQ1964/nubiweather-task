@@ -1,12 +1,16 @@
 import { UnFlattenedForecastSchemaType } from '@/schema/weatherApi';
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ForecastSchemaType } from 'shared-types/apiTypes';
 
-export const isTimeExpired = (inputTime: string): boolean => {
-  const parsedTime = dayjs(inputTime);
-  const currentTime = dayjs();
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
+export const isTimeExpired = (timestamp: string): boolean => {
+  const parsedTime = dayjs(timestamp);
+  const currentTime = dayjs();
   return currentTime.isAfter(parsedTime.add(15, 'minute'));
 };
 

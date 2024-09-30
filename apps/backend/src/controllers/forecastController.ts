@@ -39,6 +39,8 @@ const upsertForecastData = async (
   validatedData: ForecastSchemaType,
 ): Promise<void> => {
   const forecastCreateUpdatePayload = {
+    localtime: validatedData.localtime,
+    timestamp: validatedData.timestamp,
     dayForecasts: {
       create: validatedData.dayForecasts.map((dayForecast) => ({
         date: dayForecast.date,
@@ -62,8 +64,6 @@ const upsertForecastData = async (
     update: forecastCreateUpdatePayload,
     create: {
       name: validatedData.name,
-      localtime: validatedData.localtime,
-      timestamp: validatedData.timestamp,
       ...forecastCreateUpdatePayload,
     },
   });
