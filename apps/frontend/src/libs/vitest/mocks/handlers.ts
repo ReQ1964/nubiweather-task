@@ -110,7 +110,7 @@ export const mockTodayHiglightData: TodayHighlightSchemaType = {
 };
 
 export const handlers = [
-  http.get(`${API_URL}/currentWeather`, () => {
+  http.get(`${API_URL}currentWeather`, () => {
     return HttpResponse.json(mockCurrentWeatherData);
   }),
 
@@ -120,5 +120,9 @@ export const handlers = [
 
   http.get(`${API_URL}forecast/week`, () => {
     return HttpResponse.json(mockWeekForecastData);
+  }),
+
+  http.get(`${API_URL}todayHighlight`, () => {
+    return HttpResponse.json(mockTodayHiglightData);
   }),
 ];

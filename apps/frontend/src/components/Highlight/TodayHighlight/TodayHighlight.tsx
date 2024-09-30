@@ -5,6 +5,7 @@ import RainPrecipitationIcon from '@/assets/icons/weatherStatus/RainPrecipitatio
 import UVIndexIcon from '@/assets/icons/weatherStatus/UVIndexIcon';
 import VisibilityIcon from '@/assets/icons/weatherStatus/VisibilityIcon';
 import WindIcon from '@/assets/icons/weatherStatus/WindIcon';
+import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
 import { useContext } from 'react';
@@ -19,7 +20,7 @@ const TodayHighlight = () => {
 
   const fetchResult = useApiData<TodayHighlightSchemaType>(
     currentCity,
-    'http://localhost:5000/todayHighlight',
+    `${API_URL}todayHighlight`,
     TodayHighlightSchema,
     'highlight',
   );

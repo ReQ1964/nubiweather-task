@@ -1,5 +1,6 @@
 import { CurrentCityContext } from '@/App';
 import cityImg from '@/assets/img/city-bg.jpg';
+import { API_URL } from '@/constants/api';
 import { useApiData } from '@/hooks/useApiData/useApiData';
 import { useDataFetching } from '@/hooks/useDataFetching/useDataFetching';
 import dayjs from 'dayjs';
@@ -13,7 +14,7 @@ const WeatherOverview = (): ReactNode => {
   const { currentCity } = useContext(CurrentCityContext);
   const fetchResult = useApiData<CurrentWeatherSchemaType>(
     currentCity,
-    'http://localhost:5000/currentWeather',
+    `${API_URL}currentWeather`,
     CurrentWeatherSchema,
     'overview',
   );
