@@ -3,75 +3,94 @@ import dayjs from 'dayjs';
 import { http, HttpResponse } from 'msw';
 import {
   CurrentWeatherSchemaType,
-  ForecastData,
+  ForecastSchemaType,
   TodayHighlightSchemaType,
+  WeekForecastSchemaType,
 } from 'shared-types/apiTypes';
 
-export const mockForecastData: ForecastData = {
-  forecast: {
-    forecastday: [
-      {
-        date: '2024-09-08',
-        day: {
-          avgtemp_c: 22,
-          condition: {
-            text: 'Clear',
-            icon: 'dayIcon1',
-          },
+export const mockForecastData: ForecastSchemaType = {
+  name: 'City Name',
+  localtime: '2024-09-08 14:00',
+  timestamp: '2024-09-08 14:00',
+  dayForecasts: [
+    {
+      date: '2024-09-08',
+      avgtemp_c: 22,
+      condition: 'Clear',
+      icon: 'dayIcon1',
+      hourForecasts: [
+        {
+          hour: '14:00',
+          temp_c: 20,
+          condition: 'Clear1',
+          icon: 'icon1',
         },
-        hour: [
-          {
-            time: '2024-09-09 14:00',
-            temp_c: 20,
-            condition: {
-              text: 'Clear1',
-              icon: 'icon1',
-            },
-          },
-          {
-            time: '2024-09-09 15:00',
-            temp_c: 30,
-            condition: {
-              text: 'Clear2',
-              icon: 'icon2',
-            },
-          },
-        ],
-      },
-      {
-        date: '2024-09-08',
-        day: {
-          avgtemp_c: 22,
-          condition: {
-            text: 'Clear',
-            icon: 'dayIcon2',
-          },
+        {
+          hour: '15:00',
+          temp_c: 30,
+          condition: 'Clear2',
+          icon: 'icon2',
         },
-        hour: [
-          {
-            time: '2024-09-09 00:00',
-            temp_c: 25,
-            condition: {
-              text: 'Clear3',
-              icon: 'icon3',
-            },
-          },
-          {
-            time: '2024-09-09 01:00',
-            temp_c: 35,
-            condition: {
-              text: 'Clear4',
-              icon: 'icon4',
-            },
-          },
-        ],
-      },
-    ],
-  },
+      ],
+    },
+    {
+      date: '2024-09-08',
+      avgtemp_c: 22,
+      condition: 'Clear',
+      icon: 'dayIcon2',
+      hourForecasts: [
+        {
+          hour: '00:00',
+          temp_c: 25,
+          condition: 'Clear3',
+          icon: 'icon3',
+        },
+        {
+          hour: '01:00',
+          temp_c: 35,
+          condition: 'Clear4',
+          icon: 'icon4',
+        },
+      ],
+    },
+  ],
+};
+
+export const mockWeekForecastData: WeekForecastSchemaType = {
+  name: 'City Name',
+  localtime: '2024-09-08 14:00',
+  timestamp: '2024-09-08 14:00',
+  dayForecasts: [
+    {
+      date: '2024-09-08',
+      avgtemp_c: 22,
+      condition: 'Clear',
+      icon: 'dayIcon1',
+    },
+    {
+      date: '2024-09-09',
+      avgtemp_c: 24,
+      condition: 'Partly Cloudy',
+      icon: 'dayIcon2',
+    },
+    {
+      date: '2024-09-10',
+      avgtemp_c: 21,
+      condition: 'Rainy',
+      icon: 'dayIcon3',
+    },
+    {
+      date: '2024-09-11',
+      avgtemp_c: 19,
+      condition: 'Stormy',
+      icon: 'dayIcon4',
+    },
+  ],
 };
 
 export const mockCurrentWeatherData: CurrentWeatherSchemaType = {
   name: 'Gliwice',
+  timestamp: '2024-09-08 14:00',
   country: 'Poland',
   localtime: dayjs().toISOString(),
   temp_c: 22.5,
@@ -80,7 +99,8 @@ export const mockCurrentWeatherData: CurrentWeatherSchemaType = {
 };
 
 export const mockTodayHiglightData: TodayHighlightSchemaType = {
-  localtime: dayjs().toISOString(),
+  name: 'Gliwice',
+  timestamp: '2024-09-08 14:00',
   humidity: 60,
   uv: 5.5,
   vis_km: 10,
@@ -90,14 +110,15 @@ export const mockTodayHiglightData: TodayHighlightSchemaType = {
 };
 
 export const handlers = [
-  http.get(`${API_URL}forecast.json`, () => {
+  http.get(`${API_URL}/currentWeather`, () => {
+    return HttpResponse.json(mockCurrentWeatherData);
+  }),
+
+  http.get(`${API_URL}forecast/oneDay`, () => {
     return HttpResponse.json(mockForecastData);
   }),
 
-  http.get(`http://localhost:5000/currentWeather`, () => {
-    return HttpResponse.json(mockCurrentWeatherData);
-  }),
-  http.get(`http://localhost:5000/todayHighlight`, () => {
-    return HttpResponse.json(mockTodayHiglightData);
+  http.get(`${API_URL}forecast/week`, () => {
+    return HttpResponse.json(mockWeekForecastData);
   }),
 ];
